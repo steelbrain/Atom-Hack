@@ -1,6 +1,6 @@
 # Hack
 
-> [Hack](https://github.com/steelbrain/atom-hack) error reports for your [Atom](http://atom.io) editor.
+> [Hack](https://github.com/facebook/hhvm) error reports for your [Atom](http://atom.io) editor.
 
 Preview? Check out [CSSLint](https://github.com/tcarlsen/atom-csslint)
 
