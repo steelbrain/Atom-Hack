@@ -11,7 +11,7 @@ Goto your .atom/packages directory and clone this repo there
 ```bash
 cd ~/.atom/packages
 git clone https://github.com/steelbrain/atom-hack
-npm install
+cd atom-hack && npm install
 ```
 
 ## Usage
