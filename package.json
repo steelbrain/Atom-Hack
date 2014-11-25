@@ -1,0 +1,17 @@
+{
+  "name": "HackLang",
+  "main": "./lib/init",
+  "version": "0.01",
+  "private": true,
+  "description": "HackLang support for Atom Editor",
+  "author": {
+    "name": "SteelBrain"
+  },
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {
+    "atom-message-panel": "^0.3.0"
+  }
+}
