@@ -20,7 +20,12 @@ This plugin will validate all .hh files by default
 
 ## Features
 
- * It works!
+ * Validation
+
+## TODO
+
+ * Jump to Declaraction
+ * Autocomplete
 
 ## License
 
