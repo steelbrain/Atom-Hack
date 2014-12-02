@@ -21,20 +21,9 @@ By default this plugin will assume that HHVM has been installed on the local mac
 {
   "type":"remote",
   "host":"Remote Host's Domain or IP",
-  "user":"Your Username",
+  "username":"Your Username",
   "port":22,
   "privateKey":"Full Path to Private Key",
-  "remoteDir":"Directory on the remote server without the last slash"
-}
-```
-but in case you don't want to login via your Private Key, You can use your Password, but this method is `strictly forbidden`.
-```
-{
-  "type":"remote",
-  "host":"Remote Host's Domain or IP
-  "user":"Your Username",
-  "port":22,
-  "password":"Your $tr0ng P4ssW0rd",
   "remoteDir":"Directory on the remote server without the last slash"
 }
 ```
@@ -48,8 +37,9 @@ Note: Make sure to restart your Atom Editor after changing your configuration fi
 
 ## TODO
 
- * Jump to Declaraction
- * Autocomplete
+ * Remote SFTP Deployment (Being worked on, will land shortly)
+ * Jump to Declaration
+ * Auto-complete
 
 ## Current Limitations
 * User must install open-last-project Atom package for Atom-Hack to work
