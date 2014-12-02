@@ -10,7 +10,7 @@ Goto your .atom/packages directory and clone this repo there
 
 ```bash
 cd ~/.atom/packages
-git clone https://github.com/steelbrain/atom-hack
+git clone https://github.com/steelbrain/atom-hack --depth=1
 cd atom-hack && npm install
 ```
 
@@ -51,7 +51,7 @@ Note: Make sure to restart your Atom Editor after changing your configuration fi
  * Jump to Declaraction
  * Autocomplete
 
- ## Current Limitations
+## Current Limitations
 * User must install open-last-project Atom package for Atom-Hack to work
 * Errors are shown in a box at the bottom, however it could be turned into something fancy like [Atom-Lint](https://atom.io/packages/atom-lint)
 * If the user is not using shared folders, the user has to use a separate sync software like WinSCP, it should be built-in into Atom-Hack.
