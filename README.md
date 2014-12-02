@@ -42,7 +42,6 @@ Note: Make sure to restart your Atom Editor after changing your configuration fi
  * Auto-complete
 
 ## Current Limitations
-* User must install open-last-project Atom package for Atom-Hack to work
 * Errors are shown in a box at the bottom, however it could be turned into something fancy like [Atom-Lint](https://atom.io/packages/atom-lint)
 * If the user is not using shared folders, the user has to use a separate sync software like WinSCP, it should be built-in into Atom-Hack.
 
