@@ -14,6 +14,14 @@ git clone https://github.com/steelbrain/atom-hack --depth=1
 cd atom-hack && npm install
 ```
 
+## Update
+
+```bash
+cd ~/.atom/packages/atom-hack
+git pull
+git reset --hard origin/master
+```
+
 ## Usage
 
 By default this plugin will assume that HHVM has been installed on the local machine, but if you're running HHVM in a VirtualMachine with shared folders, You can use that VirtualMachine to validate your Hack Code. To use this feature, You have to place something like this in your `Project Root/.atom-hack`
