@@ -1,8 +1,6 @@
 # Atom-Hack
 
-> [Hack](https://github.com/facebook/hhvm) error reports for your [Atom](http://atom.io) editor.
-
-Preview? Check out [CSSLint](https://github.com/tcarlsen/atom-csslint)
+[Hack](https://github.com/facebook/hhvm) type checker for [Atom editor](http://atom.io).
 
 ## Installation
 
@@ -35,7 +33,7 @@ By default this plugin will assume that HHVM has been installed on the local mac
   "remoteDir":"Directory on the remote server without the last slash"
 }
 ```
-This plugin will validate all files with C++ Grammar (.hh files have it), but you can change this behavior by setting `grammar` to a value in your .atom-hack file.
+This plugin will validate all .hh, .php files and the files starting with <?hh or <?php
 Note: Make sure to restart your Atom Editor after changing your configuration file.
 
 ## Features
@@ -50,8 +48,8 @@ Note: Make sure to restart your Atom Editor after changing your configuration fi
  * Auto-complete
 
 ## Current Limitations
-* Errors are shown in a box at the bottom, however it could be turned into something fancy like [Atom-Lint](https://atom.io/packages/atom-lint)
-* If the user is not using shared folders, the user has to use a separate sync software like WinSCP, it should be built-in into Atom-Hack.
+* ~~Errors are shown in a box at the bottom, however it could be turned into something fancy like [Atom-Lint](https://atom.io/packages/atom-lint)~~
+* If the user is using remote server and not sharing folders, the user has to use a separate sync software like WinSCP, it should be built-in into Atom-Hack.
 
 ## License
 

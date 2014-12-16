@@ -1,0 +1,23 @@
+//noinspection CssUnknownTarget
+@import "syntax-variables";
+
+// Using the git-diff colors so they are visible on your syntax theme.
+@red-color: @syntax-color-removed;
+@blue-color: #00a188;
+
+.highlight-blue .region {
+  border-bottom: 1px dashed @blue-color
+}
+.highlight-red .region {
+  border-bottom: 1px dashed @red-color;
+}
+:host(:host) .gutter .line-number{
+  &.gutter-blue {
+    color:white;
+    background-color: @blue-color
+  }
+  &.gutter-red {
+    color:white;
+    background-color: @red-color;
+  }
+}
