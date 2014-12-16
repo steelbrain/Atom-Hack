@@ -2,22 +2,22 @@
 @import "syntax-variables";
 
 // Using the git-diff colors so they are visible on your syntax theme.
-@red-color: @syntax-color-removed;
-@blue-color: #00a188;
+@gutter: @syntax-color-removed;
+@underline: #00a188;
 
 .highlight-blue .region {
-  border-bottom: 1px dashed @blue-color
+  border-bottom: 1px dashed @underline
 }
 .highlight-red .region {
-  border-bottom: 1px dashed @red-color;
+  border-bottom: 1px dashed @gutter;
 }
 :host(:host) .gutter .line-number{
   &.gutter-blue {
     color:white;
-    background-color: @blue-color
+    background-color: @underline
   }
   &.gutter-red {
     color:white;
-    background-color: @red-color;
+    background-color: @gutter;
   }
 }
