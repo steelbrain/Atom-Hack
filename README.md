@@ -2,22 +2,13 @@
 
 [Hack](https://github.com/facebook/hhvm) type checker for [Atom editor](http://atom.io).
 
+## Preview
+![Preview](https://cloud.githubusercontent.com/assets/4278113/5449170/4b1597b2-8512-11e4-86f0-2ac210f68263.png)
+
 ## Installation
 
-Goto your .atom/packages directory and clone this repo there
-
 ```bash
-cd ~/.atom/packages
-git clone https://github.com/steelbrain/atom-hack --depth=1
-cd atom-hack && npm install
-```
-
-## Update
-
-```bash
-cd ~/.atom/packages/atom-hack
-git pull
-git reset --hard origin/master
+apm install atom-hack
 ```
 
 ## Usage
