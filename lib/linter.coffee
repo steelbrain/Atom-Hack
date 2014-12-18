@@ -6,7 +6,7 @@ Promise = require('bluebird')
 msgPanel = require('atom-message-panel')
 fs = require('fs')
 class Linter
-  constructor:->
+  constructor:(@main)->
     @config = {}
     @errors = []
     @decorations = []
@@ -169,6 +169,7 @@ class Linter
               resolve()
           else
             resolve()
+            me.main.activateAutoComplete()
           return
       else
         me.config =
@@ -176,8 +177,9 @@ class Linter
           localDir: atom.project.path
           remoteDir: atom.project.path
         resolve()
+        me.main.activateAutoComplete()
       return
   startsWith:(str,match)->
     return 0 is str.indexOf match
-module.exports = ->
-  new Linter()
+module.exports = (main)->
+  new Linter(main)
