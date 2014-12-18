@@ -10,10 +10,11 @@ module.exports =
     wordRegex: /[a-zA-Z0-9\.\/_-]*\/[a-zA-Z0-9\.\/_-]*/g
     exclusive: true
     buildSuggestions: ->
-      editorGrammar = @editorView.getGrammar().name
+      editor = @editorView || @editor
+      editorGrammar = editor.getGrammar().name
       if editorGrammar isnt 'PHP' and editorGrammar isnt 'C++' then return
-      buffer = @editorView.getBuffer()
-      result = spawn "hh_client", ["--auto-complete"],cwd: path.dirname(@editorView.getPath()),input:appendAtPoint(buffer.cachedText,buffer.characterIndexForPosition(@editorView.getCursorBufferPosition()),'AUTO332')
+      buffer = editor.getBuffer()
+      result = spawn "hh_client", ["--auto-complete"],cwd: path.dirname(editor.getPath()),input:appendAtPoint(buffer.cachedText,buffer.characterIndexForPosition(editor.getCursorBufferPosition()),'AUTO332')
       if result.error or result.status
         console.log "Unable to run hh_client"
       result = result.stdout.toString().split("\n")
@@ -23,3 +24,4 @@ module.exports =
       if suggestions.length < 1
         return
       return suggestions
+
