@@ -36,7 +36,7 @@ Note: Make sure to restart your Atom Editor after changing your configuration fi
 
  * Remote SFTP Deployment (Being worked on, will land shortly)
  * Jump to Declaration
- * Auto-complete
+ * ~~Auto-complete~~
 
 ## Current Limitations
 * ~~Errors are shown in a box at the bottom, however it could be turned into something fancy like [Atom-Lint](https://atom.io/packages/atom-lint)~~
