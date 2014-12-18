@@ -1,7 +1,7 @@
 {
   "name": "Atom-Hack",
   "main": "./lib/init",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "HackLang support for Atom Editor",
   "author": {
     "name": "SteelBrain"
