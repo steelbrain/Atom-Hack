@@ -1,6 +1,6 @@
 # Atom-Hack
 
-[Hack](https://github.com/facebook/hhvm) type checker for [Atom editor](http://atom.io).
+[Hack](https://github.com/facebook/hhvm) type checking and auto-completion for [Atom editor](http://atom.io).
 
 ## Preview
 ![Preview](https://cloud.githubusercontent.com/assets/4278113/5449170/4b1597b2-8512-11e4-86f0-2ac210f68263.png)
