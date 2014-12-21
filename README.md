@@ -44,4 +44,4 @@ Note: Make sure to restart your Atom Editor after changing your configuration fi
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT) © steelbrain
+[QuickPress License](https://raw.githubusercontent.com/raeesiqbal/QuickPress/master/license.txt) © steelbrain
