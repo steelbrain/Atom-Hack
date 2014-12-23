@@ -1,6 +1,6 @@
 # Atom-Hack
 
-[Hack](https://github.com/facebook/hhvm) type checking and auto-completion for [Atom editor](http://atom.io).
+[HackLang](https://github.com/facebook/hhvm) support for [Atom editor](http://atom.io).
 
 ## Preview
 ![Preview](https://cloud.githubusercontent.com/assets/4278113/5449170/4b1597b2-8512-11e4-86f0-2ac210f68263.png)
@@ -13,7 +13,7 @@ apm install atom-hack
 
 ## Usage
 
-By default this plugin will assume that HHVM has been installed on the local machine, but if you're running HHVM in a VirtualMachine with shared folders, You can use that VirtualMachine to validate your Hack Code. To use this feature, You have to place something like this in your `Project Root/.atom-hack`
+By default Atom-Hack assumes that HHVM is installed locally and needs zero-configuration if that's the case. But in case the server is remote, Please add this configuration to your `Project Root/.atom-hack`
 ```
 {
   "type":"remote",
@@ -31,15 +31,15 @@ Note: Make sure to restart your Atom Editor after changing your configuration fi
 
  * Validation
  * Remote SSH Servers
+ * Auto-Complete
+ * Fancy Error Reporting
 
 ## TODO
 
- * Remote SFTP Deployment (Being worked on, will land shortly)
+ * Remote SFTP Deployment
  * Jump to Declaration
- * ~~Auto-complete~~
 
 ## Current Limitations
-* ~~Errors are shown in a box at the bottom, however it could be turned into something fancy like [Atom-Lint](https://atom.io/packages/atom-lint)~~
 * If the user is using remote server and not sharing folders, the user has to use a separate sync software like WinSCP, it should be built-in into Atom-Hack.
 
 ## License
