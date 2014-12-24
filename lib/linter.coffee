@@ -24,8 +24,10 @@ class Linter
       if typeof pane.onDidDestroy is 'undefined' then return
       pane.onDidDestroy ->
         if me.errors.length isnt 0
-          me.markClear()
-          me.markErrors()
+          try
+            me.markClear()
+            me.markErrors()
+          catch
         return
       return
     atom.workspace.observeTextEditors (editor)->
@@ -94,7 +96,8 @@ class Linter
       delete error.message[0]
       for trace in error.message when typeof trace isnt 'undefined'
         dis.trace.push line: trace.line,start: trace.start, end: trace.end, message:trace.descr,file:trace.path.replace(@config.remoteDir,@config.localDir).split('/').join(path.sep)
-      @errors.push dis
+      if @errors.indexOf dis is -1
+        @errors.push dis
     if atom.workspaceView.find('.am-panel').length isnt 1
       msgPanel.init('<span class="icon-bug"></span> Hack report')
       @msgPanel = 1
