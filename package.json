@@ -4,18 +4,17 @@
   "version": "1.4.0",
   "description": "HackLang support for Atom Editor",
   "author": {
-    "name": "SteelBrain"
+    "name": "SteelBrain",
+    "email":"aneesiqbalbhatti@gmail.com"
   },
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "atom-message-panel": "^0.3.0",
     "bluebird": "2.3.11",
-    "ssh2-connect": "0.0.4",
-    "ssh2-exec": "0.2.7",
-    "autocomplete-plus": "git://github.com/atom-community/autocomplete-plus.git"
+    "autocomplete-plus": "git://github.com/atom-community/autocomplete-plus.git",
+    "node-ssh":"*"
   },
   "repository": "https://github.com/steelbrain/atom-hack"
 }

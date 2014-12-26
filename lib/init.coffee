@@ -1,11 +1,12 @@
 AutoComplete = require "./autocomplete"
+Linter = require './linter'
 
 dis = module.exports =
   editorSubscription: null
   providers: []
   autocomplete: null
   activate: ->
-    require('./linter')(dis)
+    new Linter(dis)
   activateAutoComplete:->
     atom.packages.activatePackage("autocomplete-plus")
     .then (pkg) =>
