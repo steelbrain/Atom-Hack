@@ -1,11 +1,11 @@
 {
   "name": "Atom-Hack",
   "main": "./lib/init",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "HackLang support for Atom Editor",
   "author": {
     "name": "SteelBrain",
-    "email":"aneesiqbalbhatti@gmail.com"
+    "email": "aneesiqbalbhatti@gmail.com"
   },
   "license": "MIT",
   "engines": {
@@ -14,7 +14,7 @@
   "dependencies": {
     "bluebird": "2.3.11",
     "autocomplete-plus": "git://github.com/atom-community/autocomplete-plus.git",
-    "node-ssh":"*"
+    "node-ssh": "*"
   },
   "repository": "https://github.com/steelbrain/atom-hack"
 }
