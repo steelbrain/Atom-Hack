@@ -16,10 +16,12 @@ class Linter
     @ssh_conn = null
     me = this
     atom.workspace.onDidChangeActivePaneItem ->
-      if me.errors.length isnt 0
-        me.markClear()
-        me.markErrors()
-      return
+      try
+        if me.errors.length isnt 0
+          me.markClear()
+          me.markErrors()
+        return
+      catch
     atom.workspace.observePaneItems (pane)->
       if typeof pane.onDidDestroy is 'undefined' then return
       pane.onDidDestroy ->
