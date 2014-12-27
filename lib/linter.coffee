@@ -69,12 +69,12 @@ class Linter
     self = this
     if @config.type is 'local'
       dir = path.dirname(localPath).replace(' ', '\\ ') #escaping spaces
-      exec "hh_client --json --from atom #{localPath}",(_,__,stderr)->
+      exec "hh_client --json --from atom", {"cwd": dir}, (_,__,stderr)->
         self.setErrors(stderr)
         self.redraw()
     else if @config.type is 'remote'
       dir = path.dirname(localPath).replace(@config.localDir,@config.remoteDir).split('\\').join(path.sep).replace(' ','\\ ')
-      @ssh.exec("hh_client --json --from atom #{dir}").then (result)->
+      @ssh.exec("hh_client --json --from atom", {"cwd": dir}).then (result)->
         self.setErrors(result.stderr)
         self.redraw()
   setErrors:(output)->
