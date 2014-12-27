@@ -119,7 +119,10 @@ class Linter
     # Time to Mark Em, Eh!
     editors = []
     editors_atom = atom.workspace.getEditors()
-    active_file = atom.workspace.getActiveEditor().getPath()
+    try
+      active_file = atom.workspace.getActiveEditor().getPath()
+    catch
+      return
     for editor in editors_atom
       editors[editor.getPath()] = editor
     # Add the decorations first
