@@ -14,7 +14,7 @@ apm install atom-hack
 ## Usage
 
 By default Atom-Hack assumes that HHVM is installed locally and needs zero-configuration if that's the case. But in case the server is remote, Please add this configuration to your `Project Root/.atom-hack`
-```
+```js
 {
   "type":"remote",
   "host":"Remote Host's Domain or IP",
