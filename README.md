@@ -25,7 +25,9 @@ By default Atom-Hack assumes that HHVM is installed locally and needs zero-confi
 }
 ```
 This plugin will validate all .hh, .php files and the files starting with <?hh or <?php
+
 Note: Make sure to restart your Atom Editor after changing your configuration file.
+
 Note: If you're using a remote server, this package will automatically upload your files to the remote Server
 
 ## Features
