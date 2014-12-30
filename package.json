@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "bluebird": "2.3.11",
-    "autocomplete-plus": "git://github.com/atom-community/autocomplete-plus.git",
     "node-ssh": "*"
   },
   "repository": "https://github.com/steelbrain/atom-hack"
