@@ -24,7 +24,11 @@ class Linter
     return new Promise (resolve)->
       if fs.existsSync "#{atom.project.path}/.atom-hack"
         fs.readFile "#{atom.project.path}/.atom-hack",'utf-8',(_,result)->
-          config = JSON.parse(result)
+          try
+            config = JSON.parse(result)
+          catch error
+            throw new Error("Invalid Configuration File")
+            console.error error
           if typeof config.type is 'undefined' then config.type = 'local'
           if typeof config.port is 'undefined' then config.port = 'local'
           if typeof config.localDir is 'undefined' then config.localDir = atom.project.path
