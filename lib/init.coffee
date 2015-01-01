@@ -1,4 +1,3 @@
-#AutoComplete = require "./autocomplete"
 Linter = require './linter'
 
 dis = module.exports =
