@@ -1,4 +1,4 @@
-# AutoComplete = require "./autocomplete"
+#AutoComplete = require "./autocomplete"
 Linter = require './linter'
 
 dis = module.exports =
@@ -8,25 +8,26 @@ dis = module.exports =
   activate: ->
     new Linter(dis)
   activateAutoComplete:->
-    return
     atom.packages.activatePackage("autocomplete-plus")
     .then (pkg) =>
       @autocomplete = pkg.mainModule
-      @registerProviders()
-  registerProviders: ->
-    @editorSubscription = atom.workspace.observeTextEditors (editor) =>
-      return unless editor?
-      editorView = atom.views.getView(editor)
-      if not editorView.mini
-        provider = new AutoComplete(editor)
-        @autocomplete.registerProviderForEditor(provider, editor)
-        @providers.push provider
+      return unless @autocomplete?
+      Provider = (require './autocomplete').ProviderClass(@autocomplete.Provider, @autocomplete.Suggestion)
+      return unless Provider?
+      @editorSubscription = atom.workspace.observeTextEditors((editor) => @registerProvider(Provider, editor))
+  registerProvider: (Provider, editor)->
+    return unless Provider?
+    return unless editor?
+    editorView = atom.views.getView(editor)
+    return unless editorView?
+    if not editorView.mini
+      provider = new Provider(editor)
+      @autocomplete.registerProviderForEditor(provider, editor)
+      @providers.push(provider)
   deactivate: ->
-    return
     @editorSubscription?.dispose()
     @editorSubscription = null
 
     @providers.forEach (provider) =>
       @autocomplete.unregisterProvider provider
-
     @providers = []
