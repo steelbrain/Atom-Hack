@@ -64,9 +64,6 @@ class Linter
     self = this
     atom.workspace.onDidChangeActivePaneItem ->
       self.msgPanel.render()
-#    atom.workspace.observePaneItems (pane)->
-#      return if typeof panel.onDidDestroy is 'undefined'
-#      pane.onDidDestroy -> self.msgPanel.render()
     atom.workspace.observeTextEditors (editor)->
       editor.buffer.onDidSave (info)->
         if self.config.type is 'remote' then self.H.upload(info.path).then(-> self.Lint(info.path)) else self.Lint(info.path)
@@ -76,12 +73,10 @@ class Linter
       dir = path.dirname(localPath).split(path.sep).join('/').replace(' ', '\\ ') #escaping spaces
       exec "hh_client --json --from atom", {"cwd": dir}, (_,__,errors)->
         self.setErrors(errors)
-        self.msgPanel.render()
     else
       dir = @H.remotePath(path.dirname(localPath))
       @ssh.exec("hh_client --json --from atom", {"cwd": dir}).then (result)->
         self.setErrors(result.stderr)
-        self.msgPanel.render()
   setErrors:(output)->
     self = this
     if output.substr(0,1) isnt '{'
@@ -98,3 +93,4 @@ class Linter
       for trace in error.message when typeof trace isnt 'undefined'
         deError.trace.push line: trace.line,start: trace.start, end: trace.end, message:trace.descr,file:trace.path.replace(@config.remoteDir,@config.localDir).split('/').join(path.sep)
       @errors.push deError
+    self.msgPanel.render()
