@@ -13,7 +13,7 @@ apm install atom-hack
 
 ## Usage
 
-By default Atom-Hack assumes that HHVM is installed locally and needs zero-configuration if that's the case. But in case the server is remote, Please add this configuration to your `Project Root/.atom-hack`
+By default Atom-Hack assumes that HHVM is installed locally and needs zero-configuration if that's the case. But in case the server is remote, Please add this configuration to your `Project Root/.atom-hack` (autoPush means auto-upload file to remote server onSave)
 ```js
 {
   "type":"remote",
@@ -21,14 +21,15 @@ By default Atom-Hack assumes that HHVM is installed locally and needs zero-confi
   "username":"Your Username",
   "port":22,
   "privateKey":"Full Path to Private Key",
-  "remoteDir":"Directory on the remote server without the last slash"
+  "remoteDir":"Directory on the remote server without the last slash",
+  "autoPush":false
 }
 ```
 This plugin will validate all .hh, .php files and the files starting with <?hh or <?php
 
-Note: Make sure to restart your Atom Editor after changing your configuration file.
+__Note__: Make sure to restart your Atom Editor after changing your configuration file.
 
-Note: If you're using a remote server, this package will automatically upload your files to the remote Server
+__Note__: If you're using a remote server, this package will automatically upload your files to the remote Server
 
 ## Features
 

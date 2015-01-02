@@ -66,7 +66,7 @@ class Linter
       self.msgPanel.render()
     atom.workspace.observeTextEditors (editor)->
       editor.buffer.onDidSave (info)->
-        if self.config.type is 'remote' then self.H.upload(info.path).then(-> self.Lint(info.path)) else self.Lint(info.path)
+        if self.config.type is 'remote' and self.config.autoPush then self.H.upload(info.path).then(-> self.Lint(info.path)) else self.Lint(info.path)
   Lint:(localPath)->
     self = this
     if @config.type is 'local'
