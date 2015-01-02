@@ -11,7 +11,7 @@ class Panel
     @decorations.forEach (decoration)-> try decoration.getMarker().destroy() catch
     @decorations = []
     if @main.errors.length < 1 then return @destroy()
-    @clear if @status is 1
+    @clear()
     editors = []
     try active_file = atom.workspace.getActiveEditor().getPath() catch then return
     for editor in atom.workspace.getEditors() then editors[editor.getPath()] = editor
