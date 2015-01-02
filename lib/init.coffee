@@ -1,32 +1,36 @@
-Linter = require './linter'
-
-dis = module.exports =
+self = module.exports =
   editorSubscription: null
   providers: []
   autocomplete: null
   activate: ->
-    new Linter(dis)
-  activateAutoComplete:->
-    atom.packages.activatePackage("autocomplete-plus")
-    .then (pkg) =>
-      @autocomplete = pkg.mainModule
-      return unless @autocomplete?
-      Provider = (require './autocomplete').ProviderClass(@autocomplete.Provider, @autocomplete.Suggestion)
-      return unless Provider?
-      @editorSubscription = atom.workspace.observeTextEditors((editor) => @registerProvider(Provider, editor))
+    setTimeout ->
+      Linter = require './linter'
+      Linter = new Linter (config)->
+        Linter.init()
+        return unless config.type is 'local'
+        atom.packages.activatePackage("autocomplete-plus")
+        .then (pkg) =>
+          self.autocomplete = pkg.mainModule
+          return unless self.autocomplete?
+          Provider = (require './autocomplete').ProviderClass(self.autocomplete.Provider, self.autocomplete.Suggestion)
+          return unless Provider?
+          try
+            self.editorSubscription = atom.workspace.observeTextEditors((editor) => self.registerProvider(Provider, editor))
+          catch error
+            console.error error
+    ,2000
   registerProvider: (Provider, editor)->
     return unless Provider?
     return unless editor?
     editorView = atom.views.getView(editor)
     return unless editorView?
-    if not editorView.mini
-      provider = new Provider(editor)
-      @autocomplete.registerProviderForEditor(provider, editor)
-      @providers.push(provider)
+    return if editorView.mini
+    provider = new Provider(editor)
+    self.autocomplete.registerProviderForEditor(provider, editor)
+    self.providers.push(provider)
   deactivate: ->
-    @editorSubscription?.dispose()
-    @editorSubscription = null
-
-    @providers.forEach (provider) =>
-      @autocomplete.unregisterProvider provider
-    @providers = []
+    self.editorSubscription?.selfpose()
+    self.editorSubscription = null
+    self.providers.forEach (provider) =>
+      self.autocomplete.unregisterProvider provider
+    self.providers = []

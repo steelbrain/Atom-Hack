@@ -1,11 +1,43 @@
 {$} = require 'atom'
 class Panel
-  constructor:()->
+  constructor:(@main)->
     @status = 0
     @panel = null
     @panel_heading = null
     @panel_body = null
     @panel_fold_body = null
+    @decorations = []
+  render:->
+    @decorations.forEach (decoration)-> try decoration.getMarker().destroy() catch
+    @decorations = []
+    if @main.errors.length < 1 then return @destroy()
+    @clear if @status is 1
+    editors = []
+    try active_file = atom.workspace.getActiveEditor().getPath() catch then return
+    for editor in atom.workspace.getEditors() then editors[editor.getPath()] = editor
+    # Add the decorations first
+    for error in @main.errors
+      continue if typeof editors[error.file] is 'undefined'
+      editor = editors[error.file]
+      if error.start is error.end then error.end++
+      range = [[error.line-1,error.start-1],[error.line-1,error.end]]
+      marker = editor.markBufferRange(range, {invalidate: 'never'})
+      @decorations.push editor.decorateMarker(marker, {type: 'highlight', class: 'highlight-red'})
+      @decorations.push editor.decorateMarker(marker, {type: 'gutter', class: 'gutter-red'})
+      for entry in error.trace
+        continue if typeof editors[entry.file] is 'undefined'
+        if entry.start is entry.end then entry.end++
+        range = [[entry.line-1,entry.start-1],[entry.line-1,entry.end]]
+        marker = editors[entry.file].markBufferRange(range, {invalidate: 'never'})
+        @decorations.push editors[entry.file].decorateMarker(marker, {type: 'highlight', class: 'highlight-blue'})
+        @decorations.push editors[entry.file].decorateMarker(marker, {type: 'gutter', class: 'gutter-blue'})
+    errorsSelf = []
+    errorsOthers = []
+    for error in @main.errors
+      if active_file is error.file then errorsSelf.push error
+      else errorsOthers.push error
+    for error in errorsSelf then @appendPointer error,active_file
+    for error in errorsOthers then @otherFile error,'text-warning'
   destroy:->
     @status = 0
     $('.hh-panel').remove()
