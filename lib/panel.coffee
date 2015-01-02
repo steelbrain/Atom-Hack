@@ -1,6 +1,6 @@
 {$} = require 'atom'
 class Panel
-  constructor:(@title)->
+  constructor:()->
     @status = 0
     @panel = null
     @panel_heading = null
@@ -8,7 +8,7 @@ class Panel
     @panel_fold_body = null
   destroy:->
     @status = 0
-    $('.am-panel').remove()
+    $('.hh-panel').remove()
   clear:->
     if @panel_body isnt null then @panel_body.html('')
     if @panel_fold_body isnt null then @panel_fold_body.html('')
@@ -48,8 +48,8 @@ class Panel
   init:->
     self = this
     @status = 1
-    @panel = $('<div class="am-panel tool-panel panel-bottom" />')
-    @panel_heading = $('<div class="panel-heading" />').html(@title).appendTo(@panel)
+    @panel = $('<div class="hh-panel tool-panel panel-bottom" />')
+    @panel_heading = $('<div class="panel-heading"><span class="icon-bug"></span> Hack report</div>').appendTo(@panel)
     $('<div class="icon-x pull-right" style="color:#aaa;margin-right:8px;cursor:pointer;"></div>').click(->
       self.destroy()
     ).appendTo(@panel_heading)
