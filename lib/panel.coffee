@@ -80,6 +80,7 @@ class Panel
   init:->
     self = this
     @status = 1
+    return if $('.hh-panel').length isnt 0
     @panel = $('<div class="hh-panel tool-panel panel-bottom" />')
     @panel_heading = $('<div class="panel-heading"><span class="icon-bug"></span> Hack report</div>').appendTo(@panel)
     $('<div class="icon-x pull-right" style="color:#aaa;margin-right:8px;cursor:pointer;"></div>').click(->
