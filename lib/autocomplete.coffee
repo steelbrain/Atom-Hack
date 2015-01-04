@@ -34,7 +34,7 @@ class HH
   @IsInstance:(Result,Editor)->
     Buffer = Editor.getBuffer().lineForRow(Editor.getCursorBufferPosition().row).split('->');
     return false if Buffer.length is 1
-    Buffer = Buffer.splice(-1)[0].split(';')[0].split(',')[0].split(')')[0].split('(')[0].trim()
+    Buffer = Buffer.splice(-1)[0].split(';')[0].split(',')[0].split(')')[0].split('(')[0].trim().split(' ')[0].trim()
     return false if Buffer.length is 0
     for word in @InstBlackList
       return false if Buffer.indexOf(word) isnt -1
