@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "bluebird": "2.5.3",
-    "node-ssh": "0.0.2",
+    "node-ssh": "0.0.3",
     "string_score": "0.1.20"
   },
   "repository": "https://github.com/steelbrain/atom-hack"
