@@ -16,13 +16,15 @@ class Tooltip
 
     # show expression type if mouse stopped somewhere
     @subscriber.subscribe @scroll, 'mousemove', (e) =>
-      @hideDetail()
+      @clearTooltip()
       @Timeout = setTimeout =>
         @showDetail(e);
       , 100
     @subscriber.subscribe @scroll, 'mouseout',=>
-      @hideDetail()
-  hideDetail:->
+      @clearTooltip()
+    atom.workspace.onDidChangeActivePaneItem =>
+      @clearTooltip()
+  clearTooltip:->
     clearTimeout @Timeout
     if @TooltipInstance?
       @TooltipInstance.remove()
