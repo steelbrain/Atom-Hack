@@ -5,6 +5,7 @@ self = module.exports =
   activate: ->
     setTimeout ->
       Linter = require './linter'
+      ToolTip = require './tooltip'
       Linter = new Linter (config)->
         Linter.init()
         return unless config.type is 'local'
