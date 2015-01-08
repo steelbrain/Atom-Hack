@@ -1,4 +1,4 @@
-# Atom-Hack
+# Atom-Hack [![Build Status](https://travis-ci.org/steelbrain/atom-hack.svg)](https://travis-ci.org/steelbrain/atom-hack)
 
 [HackLang](https://github.com/facebook/hhvm) support for [Atom editor](http://atom.io).
 
