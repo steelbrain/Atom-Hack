@@ -10,7 +10,7 @@ self = module.exports =
         Linter.init()
         return unless config.type is 'local'
         atom.workspaceView.eachEditorView (editorView) =>
-          new ToolTip(editorView)
+          try new ToolTip(editorView)
         atom.packages.activatePackage("autocomplete-plus")
         .then (pkg) =>
           self.autocomplete = pkg.mainModule
