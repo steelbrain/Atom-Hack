@@ -38,9 +38,8 @@ __Note__: If you're using a remote server, this package will automatically uploa
  * Remote SFTP Deployment
  * Auto-Complete
  * Fancy Error Reporting
-
-## TODO
  * Jump to Declaration
+ * Find Usages
 
 ## License
 
