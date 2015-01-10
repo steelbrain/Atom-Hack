@@ -2,6 +2,7 @@ require("string_score")
 spawn = require('child_process').spawnSync
 path = require 'path'
 
+
 class HH
   @PresurePoints = ['"',"'",' ',';','::','.','=','+','-','*','/','%','>','<']
   @Append:(str,index,chr)->
@@ -44,14 +45,14 @@ class HH
     Results = @PostProcess(Prefix,Results)
     return {Prefix:Prefix,Result:Results}
 module.exports =
-  ProviderClass:(Provider,Suggestion)->
+  ProviderClass:(Provider,Suggestion,Main)->
     class AutoComplete extends Provider
       exclusive: true
       buildSuggestions: ->
         editor = @editorView || @editor
         editorGrammar = editor.getGrammar().name
         if editorGrammar isnt 'PHP' and editorGrammar isnt 'C++' then return
-        Result = HH.GetSuggestions(editor.getBuffer(),editor.getPath(),editor.getCursorBufferPosition())
+        Result = HH.GetSuggestions(editor.getBuffer(),Main.getPath(editor.getPath()),editor.getCursorBufferPosition())
         return console.log("Unable to run HH_Client",Result.error,Result.status) if Result.error or Result.status
         {Prefix,Result} = HH.Process(Result.stdout.toString().split("\n"),editor)
         toReturn = []

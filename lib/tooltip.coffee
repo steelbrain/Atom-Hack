@@ -2,28 +2,28 @@
 {TooltipView} = require './tooltip-view'
 spawn = require('child_process').spawnSync
 
+
 class Tooltip
-  constructor:(@editorView)->
+  constructor:(@editorView,@editor,@Main)->
     @subscriber = new Subscriber()
-    @editor = @editorView.getEditor()
     @gutter = @editorView.gutter
     @scroll = @editorView.find('.scroll-view')
-    editorGrammar = @editor.getGrammar().name
-    throw null if editorGrammar isnt 'PHP' and editorGrammar isnt 'C++'
 
     @Timeout = null
     @TooltipInstance = null
 
     # show expression type if mouse stopped somewhere
     @subscriber.subscribe @scroll, 'mousemove', (e) =>
-      @clearTooltip()
+      do @clearTooltip
       @Timeout = setTimeout =>
         @showDetail(e);
       , 100
     @subscriber.subscribe @scroll, 'mouseout',=>
-      @clearTooltip()
-    atom.workspace.onDidChangeActivePaneItem =>
-      @clearTooltip()
+      do @clearTooltip
+    Disposable = atom.workspace.onDidChangeActivePaneItem =>
+      do @clearTooltip
+      do Disposable.dispose
+      do @subscriber.unsubscribe
   clearTooltip:->
     clearTimeout @Timeout
     if @TooltipInstance?
@@ -50,14 +50,14 @@ class Tooltip
         text: @editor.getText()
     catch
   PositionType:(args)->
-    Result = spawn "hh_client",['--type-at-pos',(args.Position.row+1)+':'+(args.Position.column+1)],{cwd:atom.project.path,input:args.text}
+    Result = spawn "hh_client",['--type-at-pos',(args.Position.row+1)+':'+(args.Position.column+1)],{cwd:@Main.getProjectRoot(),input:args.text}
     Result = Result.stdout.toString().trim();
-    if Result is '(unknown)'
+    if Result is '_' or Result is '(unknown)' # '_' is for global functions, '(unknown)' is for class methods
       @PositionFunction(args)
     else
       @TooltipInstance?.updateText(Result)
   PositionFunction:(args)->
-    Result = spawn "hh_client",['--identify-function',(args.Position.row+1)+':'+(args.Position.column+1)],{cwd:atom.project.path,input:args.text}
+    Result = spawn "hh_client",['--identify-function',(args.Position.row+1)+':'+(args.Position.column+1)],{cwd:@Main.getProjectRoot(),input:args.text}
     Result = Result.stdout.toString().trim();
     @TooltipInstance?.updateText(Result)
   PixelFromEvent:(e)->

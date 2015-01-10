@@ -1,6 +1,7 @@
 # Source: https://github.com/lukehoban/atom-ide-flow/blob/master/lib/tooltip-view.coffee
 {$, View} = require 'atom'
 
+
 class TooltipView extends View
   @content: ->
     @div class: 'ide-hack-tooltip'
