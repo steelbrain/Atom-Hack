@@ -1,5 +1,7 @@
 # Atom-Hack [![Build Status](https://travis-ci.org/steelbrain/atom-hack.svg)](https://travis-ci.org/steelbrain/atom-hack)
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/steelbrain/atom-hack?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [HackLang](https://github.com/facebook/hhvm) support for [Atom editor](http://atom.io).
 
 ## Preview
