@@ -45,4 +45,4 @@ __Note__: If you're using a remote server, this package will automatically uploa
 
 ## License
 
-[QuickPress License](https://raw.githubusercontent.com/raeesiqbal/QuickPress/master/license.txt) © steelbrain
+MIT License © steelbrain
