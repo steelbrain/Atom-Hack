@@ -7,7 +7,7 @@ module.exports = (Main)->
     requestHandler:(options)->
       AutoComplete.suggestions(options.buffer,options.editor)
   class AutoComplete
-    @points = ['"',"'",' ',')','(',',','{','}',':','-','+','>','<',';',"\n","\r"]
+    @points = ['"',"'",' ',')','(',',','{','}','-','+','>','<',';',"\n","\r"]
     @activate:->
       return if Main.Status.AutoComplete
       Instance = atom.services.provide('autocomplete.provider', '1.0.0', {provider:Provider})
@@ -29,10 +29,7 @@ module.exports = (Main)->
           if result.length
             result.forEach (entry)->
               entry = entry.split(' ')
-              if entry[0].substr(0,1) is ':'
-                toReturn.push {word:entry[0].replace(':',''),label:entry.join(' '),prefix:prefix}
-              else
-                toReturn.push {word:entry[0],label:entry.slice(1).join(' '),prefix:prefix}
+              toReturn.push {word:entry[0],label:entry.slice(1).join(' '),prefix:prefix}
           resolve toReturn
     @prefix:(text,index)->
       LaText = []
@@ -41,4 +38,5 @@ module.exports = (Main)->
         if @points.indexOf(char) isnt -1
           break
         LaText.push char
-      return LaText.reverse().join('').trim()
+      LaText = LaText.reverse().join('').split('::')
+      return LaText[LaText.length-1].trim();
