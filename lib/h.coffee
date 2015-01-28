@@ -30,5 +30,5 @@ module.exports = (Main)->
           toReturn.stdout += data
         Proc.stderr.on 'data',(data)=>
           toReturn.stderr += data
-        Proc.on 'exit',=>
+        Proc.on 'close',=>
           resolve toReturn
