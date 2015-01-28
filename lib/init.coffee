@@ -34,3 +34,6 @@ module.exports =
           @V.AC.activate()
         else
           @V.AC.deactivate()
+  deactivate:->
+    @V.TC.deactivate();
+    @V.AC.deactivate();
