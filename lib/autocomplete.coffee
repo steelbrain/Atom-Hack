@@ -2,6 +2,7 @@ module.exports = (Main)->
   Instance = null
   Provider =
     selector: '.source.php,.source.cpp'
+    blacklist: '.comment'
     requestHandler: (options) ->
       console.log options
       [{
