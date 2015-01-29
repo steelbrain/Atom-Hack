@@ -1,112 +1,73 @@
 {$, View} = require 'atom'
 
 module.exports = (Main)->
-  Subscription = null
-  SubscriptionChange = null
-  WorkSpaceView = null
-  TooltipInstance = null
-  ActiveFile = null
-  Errors = {}
-  RawErrors = []
+  Subscriptions = []
   Decorations = []
+  Errors = []
+  Editor = null
+  EditorView = atom.workspaceView.getActiveView()
+  ActiveFile = null
+  TooltipInstance = null
   class TypeChecker
     @activate:->
       return unless !Main.Status.TypeChecker
       Main.Status.TypeChecker = true
-      Subscription = atom.workspace.observeTextEditors (editor)=>
+      Subscriptions.push atom.workspace.observeTextEditors (editor)=>
+        Editor = editor
         editor.buffer.onDidSave (info)=>
           ActiveFile = info.path
-          @removeDecorations()
-          @lint()
-      SubscriptionChange = atom.workspace.onDidChangeActivePaneItem =>
-        TooltipInstance?.remove()
-        WorkSpaceView?.off 'click.atom-hack'
-        WorkSpaceView = null
-        ActiveFile = atom.workspace.getActiveEditor().getPath()
-        @removeDecorations()
-        @errorRaw()
+          @Lint()
+      Subscriptions.push atom.workspace.onDidChangeActivePaneItem =>
+        EditorView?.off 'click.atom-hack'
+        EditorView = atom.workspaceView.getActiveView()
+        Editor = atom.workspace.getActiveEditor()
+        ActiveFile = Editor.getPath()
+        try
+          @ProcessErrors()
+        catch error
+          console.error(error.stack);
     @deactivate:->
       return unless Main.Status.TypeChecker
-      Subscription?.dispose()
-      SubscriptionChange?.dispose()
-      TooltipInstance?.remove()
-      WorkSpaceView?.off 'click.atom-hack'
       Main.Status.TypeChecker = false
-    @removeDecorations:->
-      if Decorations.length
-        Decorations.forEach (decoration)->
-          try decoration.destroy()
-        Decorations = []
-    @lint:->
+      Subscriptions.forEach (sub)-> sub.dispose()
+      Subscriptions = []
+      Decorations.forEach (decoration)-> try decoration.destroy()
+      Decorations = []
+      TooltipInstance?.remove()
+    @Lint:->
       Main.V.H.exec(['--json'],null,ActiveFile).then (result)=>
         result = JSON.parse(result.stderr)
-        return if result.passed
-        RawErrors = result.errors
-        @errorRaw()
-    @errorRaw:->
-      editor = atom.workspace.getActiveEditor()
-      WorkSpaceView?.off 'click.atom-hack'
-      WorkSpaceView = atom.workspaceView.getActiveView()
-      WorkSpaceView.on 'click.atom-hack',(e)=>
-        cursors = editor.getCursorBufferPosition()
-        return TooltipInstance?.remove() if typeof Errors[cursors.row+1] is 'undefined'
-        current = null
-        Errors[cursors.row+1].forEach (info)->
-          if cursors.column >= info.start-1 and cursors.column <= info.end
-            current = info
-        return unless current?
+        Errors = result.errors
         try
-          @errorTooltip(current,cursors,e)
+          @ProcessErrors()
         catch error
-          console.log error
-      RawErrors.forEach (error)=>
-        @errorProcess error.message,editor
-    @errorTooltip:(error,cursors,e)->
+          console.error(error.stack)
+    @ProcessErrors:->
+      # Remove Decorations
+      if Decorations.length
+        Decorations.forEach (decoration)-> try decoration.destroy()
+        Decorations = []
       TooltipInstance?.remove()
-      offset = WorkSpaceView.lineHeight * 0.7
-      TooltipInstance = new Main.V.TT(
-        left: e.clientX
-        right: e.clientX
-        top: e.clientY - offset
-        bottom: e.clientY + offset
-      ,@errorMessage(error,cursors))
-    @errorMessage:(error,cursor)->
-      if error.trace[0].line - 1 is cursor.row
-        message = $("<span>#{error.trace[0].descr}<br></span>")
-        error.trace.slice(1).forEach (entry)=>
-          message.append @errorClickable(entry)
-          message.append "<br>"
-      else
-        message = @errorClickable(error.trace[0])
-      return message
-    @errorClickable:(error)->
-      if error.path is ActiveFile
-        return $("<span>#{error.descr} on </span>").append(
-          $("<a href='#'>Line #{error.line} Col #{error.start} </a>").click ->
-            atom.workspace.open(error.path).then ->
-              atom.workspace.getActiveEditor().setCursorBufferPosition [error.line-1,error.start-1]
-              TooltipInstance?.remove()
-        );
-      else
-        return $("<span>#{error.descr} on </span>").append(
-          $("<a href='#'>Line #{error.line} Col #{error.start} in #{error.path}</a>").click ->
-            atom.workspace.open(error.path).then ->
-              atom.workspace.getActiveEditor().setCursorBufferPosition [error.line-1,error.start-1]
-              TooltipInstance?.remove()
-        );
-    @errorProcess:(errors,editor)->
-      first = true
-      for error in errors
-        color = if first then 'red' else 'blue'
-        first = false
-        if error.path is ActiveFile
-          @errorIndex error,errors
-          @errorMark error,editor,color
-    @errorIndex:(error,errors)->
-      Errors[error.line] = Errors[error.line] || []
-      Errors[error.line].push start:error.start,end:error.end,trace:errors
-    @errorMark:(error,editor,color)->
-      range = [[error.line-1,error.start-1],[error.line-1,error.end]]
-      marker = editor.markBufferRange(range, {invalidate: 'never'})
-      Decorations.push editor.decorateMarker(marker, {type: 'highlight', class: 'highlight-'+color})
-      Decorations.push editor.decorateMarker(marker, {type: 'gutter', class: 'gutter-'+color})
+      return unless Errors.length
+      # TODO: Add .on to listen clicks and show tooltips
+      EditorView?.off 'click.atom-hack'
+      I = 0
+      for Error in Errors
+        LeFirst = true
+        for TraceEntry in Error.message
+          ++I
+          ((I)->
+            Color = if LeFirst then 'red' else 'blue'
+            LeFirst = false
+            if TraceEntry.path is ActiveFile
+              # TODO: Add this to an indexed error storage to be used to show tooltips
+              LeRange = [[TraceEntry.line-1,TraceEntry.start-1],[TraceEntry.line-1,TraceEntry.end]]
+              marker = Editor.markBufferRange(LeRange, {invalidate: 'never'})
+              Decorations.push Editor.decorateMarker(marker, {type: 'highlight', class: 'highlight-'+Color})
+              Decorations.push Editor.decorateMarker(marker, {type: 'gutter', class: 'gutter-'+Color})
+              Decorations.push Editor.decorateMarker(marker, {type: 'gutter', class: 'atom-hack-'+I})
+              setTimeout =>
+                #TODO: Attach the hover event here
+                EditorView.find('.atom-hack-'+I)
+              ,100
+          )(I)
