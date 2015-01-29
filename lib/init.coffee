@@ -20,6 +20,7 @@ module.exports =
     @V.H = require('./h')(this);
     @V.TC = require('./typechecker')(this);
     @V.AC = require('./autocomplete')(this);
+    @V.TT = require('./tooltip-view')(this);
     @Status.TypeChecker = false
     @Status.AutoComplete = false
     @V.H.readConfig().then =>
