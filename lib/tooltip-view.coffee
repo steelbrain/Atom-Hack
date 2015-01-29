@@ -11,12 +11,6 @@ module.exports = (Main)->
       $(document.body).append this
       @updatePosition()
 
-    # update tooltip text
-    updateText: (text) ->
-      @empty()
-      @append @LeMessage
-      @updatePosition()
-
     # smart position update
     updatePosition: ->
       coords = [@rect.right, @rect.bottom, undefined]
