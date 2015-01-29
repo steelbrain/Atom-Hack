@@ -6,14 +6,15 @@ module.exports = (Main)->
     @content: ->
       @div class: 'ide-hack-tooltip'
 
-    initialize: (@rect, text = null) ->
-      @text(text) if text?
+    initialize: (@rect, @LeMessage) ->
+      @append LeMessage
       $(document.body).append this
       @updatePosition()
 
     # update tooltip text
     updateText: (text) ->
-      @text(text)
+      @empty()
+      @append @LeMessage
       @updatePosition()
 
     # smart position update
