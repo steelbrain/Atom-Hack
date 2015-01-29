@@ -2,10 +2,12 @@
 
 module.exports = (Main)->
   Subscription = null
+  SubscriptionChange = null
   WorkSpaceView = null
   TooltipInstance = null
   ActiveFile = null
   Errors = {}
+  RawErrors = []
   Decorations = []
   class TypeChecker
     @activate:->
@@ -15,10 +17,18 @@ module.exports = (Main)->
         editor.buffer.onDidSave (info)=>
           ActiveFile = info.path
           @removeDecorations()
-          @lint(editor)
+          @lint()
+      SubscriptionChange = atom.workspace.onDidChangeActivePaneItem =>
+        TooltipInstance?.remove()
+        WorkSpaceView?.off 'click.atom-hack'
+        WorkSpaceView = null
+        ActiveFile = atom.workspace.getActiveEditor().getPath()
+        @removeDecorations()
+        @errorRaw()
     @deactivate:->
       return unless Main.Status.TypeChecker
       Subscription?.dispose()
+      SubscriptionChange?.dispose()
       TooltipInstance?.remove()
       WorkSpaceView?.off 'click.atom-hack'
       Main.Status.TypeChecker = false
@@ -27,26 +37,30 @@ module.exports = (Main)->
         Decorations.forEach (decoration)->
           try decoration.destroy()
         Decorations = []
-    @lint:(editor)->
+    @lint:->
       Main.V.H.exec(['--json'],null,ActiveFile).then (result)=>
         result = JSON.parse(result.stderr)
         return if result.passed
-        WorkSpaceView?.off 'click.atom-hack'
-        WorkSpaceView = atom.workspaceView.getActiveView()
-        WorkSpaceView.on 'click.atom-hack',(e)=>
-          cursors = editor.getCursorBufferPosition()
-          return TooltipInstance?.remove() if typeof Errors[cursors.row+1] is 'undefined'
-          current = null
-          Errors[cursors.row+1].forEach (info)->
-            if cursors.column >= info.start-1 and cursors.column <= info.end
-              current = info
-          return unless current?
-          try
-            @errorTooltip(current,cursors,e)
-          catch error
-            console.log error
-        result.errors.forEach (error)=>
-          @errorProcess error.message,editor
+        RawErrors = result.errors
+        @errorRaw()
+    @errorRaw:->
+      editor = atom.workspace.getActiveEditor()
+      WorkSpaceView?.off 'click.atom-hack'
+      WorkSpaceView = atom.workspaceView.getActiveView()
+      WorkSpaceView.on 'click.atom-hack',(e)=>
+        cursors = editor.getCursorBufferPosition()
+        return TooltipInstance?.remove() if typeof Errors[cursors.row+1] is 'undefined'
+        current = null
+        Errors[cursors.row+1].forEach (info)->
+          if cursors.column >= info.start-1 and cursors.column <= info.end
+            current = info
+        return unless current?
+        try
+          @errorTooltip(current,cursors,e)
+        catch error
+          console.log error
+      RawErrors.forEach (error)=>
+        @errorProcess error.message,editor
     @errorTooltip:(error,cursors,e)->
       TooltipInstance?.remove()
       offset = WorkSpaceView.lineHeight * 0.7
