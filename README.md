@@ -40,7 +40,6 @@ __Note__: If you're using a remote server, this package will automatically uploa
  * Auto-Complete
  * Fancy Error Reporting
  * Jump to Declaration
- * Find Usages
 
 ## License
 
