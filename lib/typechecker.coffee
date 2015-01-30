@@ -40,7 +40,7 @@ module.exports = (Main)->
       Subscriptions = []
       @RemoveDecorations()
       @RemoveErrors()
-      Main.V.MPI.detach()
+      Main.V.MPI.close()
       ScrollSubscription?.dispose()
     @Lint:->
       Main.V.H.exec(['--json'],null,ActiveFile).then (result)=>
@@ -60,7 +60,7 @@ module.exports = (Main)->
     @ProcessErrors:->
       @RemoveDecorations()
       @RemoveErrors()
-      return Main.V.MPI.detach() unless Errors.length
+      return Main.V.MPI.close() unless Errors.length
       for Error,I in Errors
         LeFirst = true
         for TraceEntry in Error.message
@@ -78,4 +78,4 @@ module.exports = (Main)->
         LeErrors.forEach (error)->
           error.Render(RowStart,RowEnd,ActiveFile,Editor,EditorView,LineHeight)
       else
-        Main.V.MPI.detach()
+        Main.V.MPI.close()
