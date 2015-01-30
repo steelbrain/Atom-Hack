@@ -6,32 +6,6 @@
 @import "ui-variables";
 @import "tooltips";
 
-@error-color: #b22222;
-.editor {
-  .ide-hack-error {
-    background-color: @background-color-highlight;
-    z-index: 3;
-  }
-
-  .highlight {
-    &.ide-hack-error .region {
-      background: linear-gradient(to right, fadeout(@background-color-error, 30%) 0%, fadeout(@background-color-error, 35%) 100%);
-      z-index: 3;
-    }
-  }
-
-  .gutter .line-number {
-    &.ide-hack-error .icon-right {
-      visibility: visible;
-      &:before {
-        content: @alert;
-        color: @text-color-error;
-        z-index: 3;
-      }
-    }
-  }
-}
-
 .ide-hack-tooltip {
   .tooltip .tooltip-inner;
 
