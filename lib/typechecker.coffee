@@ -29,10 +29,10 @@ module.exports = (Main)->
           ScrollSubscription = Editor.on 'scroll-top-changed',=>
             clearTimeout ScrollTimeout
             ScrollTimeout = setTimeout(@OnScroll.bind(this),100)
-        try
-          @OnScroll()
-        catch error
-          console.error(error.stack);
+          try
+            @OnScroll()
+          catch error
+            console.error(error.stack);
     @deactivate:->
       return unless Main.Status.TypeChecker
       Main.Status.TypeChecker = false
