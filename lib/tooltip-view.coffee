@@ -6,26 +6,22 @@ module.exports = (Main)->
     @content: ->
       @div class: 'ide-hack-tooltip'
 
-    initialize: (@rect, @LeMessage) ->
+    initialize: (rect, @LeMessage) ->
       @append LeMessage
       $(document.body).append this
-      @updatePosition()
-
-    # smart position update
-    updatePosition: ->
-      coords = [@rect.right, @rect.bottom, undefined]
-      offset = 10
+      Coords = [rect.right, rect.bottom, undefined]
+      Offset = 10
 
       # x axis adjust
-      if coords[0] + this[0].offsetWidth >= $(document.body).width()
-        coords[0] = $(document.body).width() - this[0].offsetWidth - offset
-      if coords[0] < 0
+      if Coords[0] + this[0].OffsetWidth >= $(document.body).width()
+        Coords[0] = $(document.body).width() - this[0].OffsetWidth - Offset
+      if Coords[0] < 0
         this.css({ 'white-space': 'pre-wrap' })
-        coords[0] = offset
-        coords[2] = offset
+        Coords[0] = Offset
+        Coords[2] = Offset
 
       # y axis adjust
-      if coords[1] + this[0].offsetHeight >= $(document.body).height()
-        coords[1] = @rect.top - this[0].offsetHeight
+      if Coords[1] + this[0].OffsetHeight >= $(document.body).height()
+        Coords[1] = @rect.top - this[0].OffsetHeight
 
-      this.css({ left: coords[0], top: coords[1], right: coords[2] })
+      this.css({ left: Coords[0], top: Coords[1], right: Coords[2] })
