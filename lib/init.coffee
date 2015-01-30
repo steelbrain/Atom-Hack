@@ -36,7 +36,6 @@ module.exports =
     @Status.TypeChecker = false
     @Status.AutoComplete = false
     @V.H.readConfig().then =>
-      @V.H.spawn()
       atom.config.observe 'Atom-Hack.enableTypeChecking',(status)=>
         if status
           @V.TC.activate()
