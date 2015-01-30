@@ -10,6 +10,7 @@ module.exports =
       type: 'string'
       default: 'hh_client'
   Subscriptions:[]
+  TypeCheckerDecorations:[]
   V:{}
   Status:{}
   activate:->
@@ -19,6 +20,7 @@ module.exports =
     @V.CP = require('child_process')
     @V.H = require('./h')(this);
     @V.TC = require('./typechecker')(this);
+    @V.TE = require('./typechecker-error')(this);
     @V.AC = require('./autocomplete')(this);
     @V.TT = require('./tooltip-view')(this);
     @Status.TypeChecker = false

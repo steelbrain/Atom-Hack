@@ -1,26 +1,34 @@
-{$, View} = require 'atom'
-
 module.exports = (Main)->
   Subscriptions = []
   Decorations = []
   Errors = []
+  LeErrors = []
   Editor = atom.workspace.getActiveEditor()
   EditorView = atom.views.getView(Editor)
   ActiveFile = Editor?.getPath()
-  TooltipInstance = null
+  ScrollSubscription = null
+  ScrollTimeout = null
   class TypeChecker
     @activate:->
       return unless !Main.Status.TypeChecker
       Main.Status.TypeChecker = true
+      ScrollSubscription = Editor.on 'scroll-top-changed',=>
+        clearTimeout ScrollTimeout
+        ScrollTimeout = setTimeout(@OnScroll.bind(this),100)
       Subscriptions.push atom.workspace.observeTextEditors (editor)=>
         editor.buffer.onDidSave (info)=>
           @Lint()
       Subscriptions.push atom.workspace.onDidChangeActivePaneItem =>
+        ScrollSubscription?.dispose()
+
         Editor = atom.workspace.getActiveEditor()
         EditorView = atom.views.getView(Editor)
         ActiveFile = Editor?.getPath()
+        ScrollSubscription = Editor.on 'scroll-top-changed',=>
+          clearTimeout ScrollTimeout
+          ScrollTimeout = setTimeout(@OnScroll.bind(this),100)
         try
-          @ProcessErrors()
+          @OnScroll()
         catch error
           console.error(error.stack);
     @deactivate:->
@@ -28,9 +36,9 @@ module.exports = (Main)->
       Main.Status.TypeChecker = false
       Subscriptions.forEach (sub)-> sub.dispose()
       Subscriptions = []
-      Decorations.forEach (decoration)-> try decoration.destroy()
-      Decorations = []
-      TooltipInstance?.remove()
+      @RemoveDecorations()
+      @RemoveErrors()
+      ScrollSubscription?.dispose()
     @Lint:->
       Main.V.H.exec(['--json'],null,ActiveFile).then (result)=>
         result = JSON.parse(result.stderr)
@@ -39,26 +47,26 @@ module.exports = (Main)->
           @ProcessErrors()
         catch error
           console.error(error.stack)
+    @RemoveDecorations:->
+      if Main.TypeCheckerDecorations.length
+        Main.TypeCheckerDecorations.forEach (decoration)-> try decoration.destroy()
+        Main.TypeCheckerDecorations = []
+    @RemoveErrors:->
+      LeErrors.forEach (error)-> error.Remove()
+      LeErrors = []
     @ProcessErrors:->
-      # Remove Decorations
-      if Decorations.length
-        Decorations.forEach (decoration)-> try decoration.destroy()
-        Decorations = []
-      TooltipInstance?.remove()
+      @RemoveDecorations()
       return unless Errors.length
-      I = 0
-      for Error in Errors
+      @RemoveErrors()
+      for Error,I in Errors
         LeFirst = true
         for TraceEntry in Error.message
-          ++I
-          ((I)->
-            Color = if LeFirst then 'red' else 'blue'
-            LeFirst = false
-            if TraceEntry.path is ActiveFile
-              # TODO: Add this to an indexed error storage to be used to show tooltips
-              LeRange = [[TraceEntry.line-1,TraceEntry.start-1],[TraceEntry.line-1,TraceEntry.end]]
-              marker = Editor.markBufferRange(LeRange, {invalidate: 'never'})
-              Decorations.push Editor.decorateMarker(marker, {type: 'highlight', class: 'highlight-'+Color})
-              Decorations.push Editor.decorateMarker(marker, {type: 'gutter', class: 'gutter-'+Color})
-              Decorations.push Editor.decorateMarker(marker, {type: 'gutter', class: 'atom-hack-'+I})
-          )(I)
+          Color = if LeFirst then 'red' else 'blue'
+          LeErrors.push new Main.V.TE(I,TraceEntry.path,TraceEntry.line,TraceEntry.start,TraceEntry.end,Color,Error.message)
+          LeFirst = false
+      setTimeout @OnScroll.bind(this),70
+    @OnScroll:->
+      RowStart = EditorView.getFirstVisibleScreenRow()
+      RowEnd = EditorView.getLastVisibleScreenRow()
+      LeErrors.forEach (error)->
+        error.Render(RowStart,RowEnd,ActiveFile,Editor,EditorView)
