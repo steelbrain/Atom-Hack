@@ -6,6 +6,11 @@ module.exports =
     enableAutoComplete:
       type: 'boolean'
       default: true
+    interceptJumpToDeclarationCallsFor:
+      type: 'array',
+      default: ['C++','PHP']
+      items:
+        type: 'string'
     typeCheckerCommand:
       type: 'string'
       default: 'hh_client'
@@ -24,6 +29,7 @@ module.exports =
     @V.TE = require('./typechecker-error')(this);
     @V.AC = require('./autocomplete')(this);
     @V.TT = require('./tooltip-view')(this);
+    require('./cmenu')(this).initialize();
 
     @V.MPI = new @V.MP.MessagePanelView title: "Hack TypeChecker"
 
@@ -44,3 +50,5 @@ module.exports =
   deactivate:->
     @V.TC.deactivate();
     @V.AC.deactivate();
+    @Subscriptions.forEach (sub)-> sub.dispose()
+    @Subscriptions = []
