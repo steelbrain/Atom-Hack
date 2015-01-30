@@ -1,7 +1,7 @@
 {
   "name": "Atom-Hack",
   "main": "./lib/init",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "HackLang support for Atom Editor",
   "author": {
     "name": "SteelBrain",
@@ -14,7 +14,7 @@
   "dependencies": {
     "node-ssh": "latest",
     "string_score": "latest",
-    "atom-message-panel":"latest"
+    "atom-message-panel": "latest"
   },
   "repository": "https://github.com/steelbrain/atom-hack"
 }
