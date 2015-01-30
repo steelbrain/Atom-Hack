@@ -68,5 +68,6 @@ module.exports = (Main)->
     @OnScroll:->
       RowStart = EditorView.getFirstVisibleScreenRow()
       RowEnd = EditorView.getLastVisibleScreenRow()
+      LineHeight = getComputedStyle(EditorView)['line-height'];
       LeErrors.forEach (error)->
-        error.Render(RowStart,RowEnd,ActiveFile,Editor,EditorView)
+        error.Render(RowStart,RowEnd,ActiveFile,Editor,EditorView,LineHeight)
