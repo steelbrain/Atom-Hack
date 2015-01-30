@@ -20,13 +20,15 @@ module.exports = (Main)->
           @Lint()
       Subscriptions.push atom.workspace.onDidChangeActivePaneItem =>
         ScrollSubscription?.dispose()
+        ScrollSubscription = null
 
         Editor = atom.workspace.getActiveEditor()
         EditorView = atom.views.getView(Editor)
         ActiveFile = Editor?.getPath()
-        ScrollSubscription = Editor.on 'scroll-top-changed',=>
-          clearTimeout ScrollTimeout
-          ScrollTimeout = setTimeout(@OnScroll.bind(this),100)
+        if ActiveFile
+          ScrollSubscription = Editor.on 'scroll-top-changed',=>
+            clearTimeout ScrollTimeout
+            ScrollTimeout = setTimeout(@OnScroll.bind(this),100)
         try
           @OnScroll()
         catch error
