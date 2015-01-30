@@ -5,7 +5,7 @@ module.exports = (Main)->
   Decorations = []
   Errors = []
   Editor = atom.workspace.getActiveEditor()
-  EditorView = atom.workspaceView.getActiveView()
+  EditorView = atom.views.getView(atom.workspace)
   ActiveFile = Editor?.getPath()
   TooltipInstance = null
   class TypeChecker
@@ -17,7 +17,7 @@ module.exports = (Main)->
           @Lint()
       Subscriptions.push atom.workspace.onDidChangeActivePaneItem =>
         EditorView?.off 'click.atom-hack'
-        EditorView = atom.workspaceView.getActiveView()
+        EditorView = atom.views.getView(atom.workspace)
         Editor = atom.workspace.getActiveEditor()
         ActiveFile = Editor?.getPath()
         try
