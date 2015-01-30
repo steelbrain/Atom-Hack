@@ -1,5 +1,8 @@
 //noinspection CssUnknownTarget
 @import "syntax-variables";
+@import "octicon-utf-codes";
+@import "ui-variables";
+@import "tooltips";
 
 // Using the git-diff colors so they are visible on your syntax theme.
 @gutter: @syntax-color-removed;
@@ -19,5 +22,27 @@
   &.gutter-red {
     color:white;
     background-color: @gutter;
+  }
+}
+.ide-hack-error {
+  background-color: @background-color-highlight;
+  z-index: 3;
+}
+
+.highlight {
+  &.ide-hack-error .region {
+    background: linear-gradient(to right, fadeout(@background-color-error, 30%) 0%, fadeout(@background-color-error, 35%) 100%);
+    z-index: 3;
+  }
+}
+
+.gutter .line-number {
+  &.ide-hack-error .icon-right {
+    visibility: visible;
+    &:before {
+      content: @alert;
+      color: @text-color-error;
+      z-index: 3;
+    }
   }
 }
