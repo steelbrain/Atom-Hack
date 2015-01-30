@@ -59,8 +59,8 @@ module.exports = (Main)->
       LeErrors = []
     @ProcessErrors:->
       @RemoveDecorations()
-      return unless Errors.length
       @RemoveErrors()
+      return Main.V.MPI.detach() unless Errors.length
       for Error,I in Errors
         LeFirst = true
         for TraceEntry in Error.message
