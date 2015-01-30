@@ -14,12 +14,12 @@ module.exports = (Main)->
           @Element = null
         else
           @Element.off('mouseenter.atom-hack mouseleave.atom-hack');
-      return console.log("It aint my file Yo!") if ActiveFile isnt @File
+      return if ActiveFile isnt @File
       Marker = Editor.markBufferRange(@Range, {invalidate: 'never'})
       Main.TypeCheckerDecorations.push Editor.decorateMarker(Marker, {type: 'highlight', class: 'highlight-'+@Color})
       Main.TypeCheckerDecorations.push Editor.decorateMarker(Marker, {type: 'gutter', class: 'gutter-'+@Color})
       Main.TypeCheckerDecorations.push Editor.decorateMarker(Marker, {type: 'gutter', class: 'atom-hack-'+@Num})
-      return console.log("I aint supposed to be here") if @Line-1 >= RowEnd or @Line <= RowStart
+      return if @Line-1 >= RowEnd or @Line <= RowStart
       setTimeout =>
         @Element = $(EditorView.querySelector('atom-text-editor /deep/ .atom-hack-'+@Num))
         @Element.on 'mouseenter.atom-hack mouseleave.atom-hack',@onHover.bind(this)
