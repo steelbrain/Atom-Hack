@@ -21,7 +21,7 @@ module.exports = (Main)->
         EditorView?.off 'click.atom-hack'
         EditorView = atom.workspaceView.getActiveView()
         Editor = atom.workspace.getActiveEditor()
-        ActiveFile = Editor.getPath()
+        ActiveFile = Editor?.getPath()
         try
           @ProcessErrors()
         catch error
