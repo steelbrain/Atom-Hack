@@ -5,7 +5,7 @@ module.exports = (Main)->
   Decorations = []
   Errors = []
   Editor = atom.workspace.getActiveEditor()
-  EditorView = atom.views.getView(atom.workspace)
+  EditorView = atom.views.getView(Editor)
   ActiveFile = Editor?.getPath()
   TooltipInstance = null
   class TypeChecker
@@ -16,9 +16,8 @@ module.exports = (Main)->
         editor.buffer.onDidSave (info)=>
           @Lint()
       Subscriptions.push atom.workspace.onDidChangeActivePaneItem =>
-        EditorView?.off 'click.atom-hack'
-        EditorView = atom.views.getView(atom.workspace)
         Editor = atom.workspace.getActiveEditor()
+        EditorView = atom.views.getView(Editor)
         ActiveFile = Editor?.getPath()
         try
           @ProcessErrors()
@@ -47,8 +46,6 @@ module.exports = (Main)->
         Decorations = []
       TooltipInstance?.remove()
       return unless Errors.length
-      # TODO: Add .on to listen clicks and show tooltips
-      EditorView?.off 'click.atom-hack'
       I = 0
       for Error in Errors
         LeFirst = true
@@ -64,8 +61,4 @@ module.exports = (Main)->
               Decorations.push Editor.decorateMarker(marker, {type: 'highlight', class: 'highlight-'+Color})
               Decorations.push Editor.decorateMarker(marker, {type: 'gutter', class: 'gutter-'+Color})
               Decorations.push Editor.decorateMarker(marker, {type: 'gutter', class: 'atom-hack-'+I})
-              setTimeout =>
-                #TODO: Attach the hover event here
-                EditorView.find('.atom-hack-'+I)
-              ,100
           )(I)
