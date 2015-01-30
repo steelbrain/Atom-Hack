@@ -40,6 +40,7 @@ module.exports = (Main)->
       Subscriptions = []
       @RemoveDecorations()
       @RemoveErrors()
+      Main.V.MPI.detach()
       ScrollSubscription?.dispose()
     @Lint:->
       Main.V.H.exec(['--json'],null,ActiveFile).then (result)=>
@@ -71,5 +72,10 @@ module.exports = (Main)->
       RowStart = EditorView.getFirstVisibleScreenRow()
       RowEnd = EditorView.getLastVisibleScreenRow()
       LineHeight = getComputedStyle(EditorView)['line-height'];
-      LeErrors.forEach (error)->
-        error.Render(RowStart,RowEnd,ActiveFile,Editor,EditorView,LineHeight)
+      Main.V.MPI.clear()
+      if LeErrors.length
+        Main.V.MPI.attach()
+        LeErrors.forEach (error)->
+          error.Render(RowStart,RowEnd,ActiveFile,Editor,EditorView,LineHeight)
+      else
+        Main.V.MPI.detach()

@@ -20,7 +20,12 @@ module.exports = (Main)->
           @Element = null
         else
           @Element.off('mouseenter.atom-hack mouseleave.atom-hack');
-      return if ActiveFile isnt @File
+      Main.V.MPI.add(new Main.V.MP.PlainMessageView(
+        raw: true
+        message: @TooltipEntry @Trace[0]
+      ))
+      return unless @File is ActiveFile
+
       Marker = Editor.markBufferRange(@Range, {invalidate: 'never'})
       Main.TypeCheckerDecorations.push Editor.decorateMarker(Marker, {type: 'highlight', class: 'highlight-'+@Color})
       Main.TypeCheckerDecorations.push Editor.decorateMarker(Marker, {type: 'gutter', class: 'gutter-'+@Color})
@@ -60,18 +65,16 @@ module.exports = (Main)->
     TooltipContent:->
       Parent = $('<div></div>')
       for Error in @Trace
-        ((Error)=>
-          Text = "at Line #{Error.line} Col #{Error.start}"
-          if Error.path isnt @ActiveFile
-            Text += " in #{Error.path}"
-          Parent.append(
-            $("<span>#{Error.descr} </span>").append(
-              $("<a href='#'>#{Text}</a>").click =>
-                @TooltipJump Error
-            )
-          )
-        )(Error);
+        Parent.append @TooltipEntry Error,Parent
       return Parent
+    TooltipEntry:(Error,Parent)->
+      Text = "at Line #{Error.line} Col #{Error.start}"
+      if Error.path isnt @ActiveFile
+        Text += " in #{Error.path}"
+      $("<span>#{Error.descr} </span>").append(
+        $("<a href='#'>#{Text}</a>").click =>
+          @TooltipJump Error
+      )
     TooltipJump:(Error)->
       atom.workspace.open(Error.path).then ->
         atom.workspace.getActiveEditor().setCursorBufferPosition [Error.line-1,Error.start-1]

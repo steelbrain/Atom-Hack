@@ -18,11 +18,15 @@ module.exports =
     @V.Path = require('path')
     @V.SSH = require('node-ssh')
     @V.CP = require('child_process')
+    @V.MP = require('atom-message-panel')
     @V.H = require('./h')(this);
     @V.TC = require('./typechecker')(this);
     @V.TE = require('./typechecker-error')(this);
     @V.AC = require('./autocomplete')(this);
     @V.TT = require('./tooltip-view')(this);
+
+    @V.MPI = new @V.MP.MessagePanelView title: "Hack TypeChecker"
+
     @Status.TypeChecker = false
     @Status.AutoComplete = false
     @V.H.readConfig().then =>
