@@ -32,8 +32,7 @@ module.exports = (Main)->
         if @config.autoPush and (RemotePath.substr(-3) is '.hh' or RemotePath.substr(-4) is '.php')
           LePromise = @SSH.put(path,RemotePath)
         else
-          LePromise = new Promise (resolve)->
-            resolve()
+          LePromise = Promise.resolve()
         LePromise.then =>
           @SSH.exec(command+' '+args.join(' '),{cwd:RemotePath.split('/').slice(0,-1).join('/')}).then (result)->
             resolve(result)
