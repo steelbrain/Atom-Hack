@@ -28,9 +28,11 @@ module.exports =
     @V.TC = require('./typechecker')(this);
     @V.TE = require('./typechecker-error')(this);
     @V.AC = require('./autocomplete')(this);
-    @V.TT = require('./tooltip-view')(this);
-    require('./cmenu')(this).initialize();
+    @V.TTV = require('./tooltip-view')(this);
+    @V.TT = require('./tooltip')(this);
 
+    require('./cmenu')(this).initialize();
+    @V.TT.activate();
     @V.MPI = new @V.MP.MessagePanelView title: "Hack TypeChecker"
 
     @Status.TypeChecker = false
@@ -49,5 +51,6 @@ module.exports =
   deactivate:->
     @V.TC.deactivate();
     @V.AC.deactivate();
+    @V.TT.deactivate();
     @Subscriptions.forEach (sub)-> sub.dispose()
     @Subscriptions = []

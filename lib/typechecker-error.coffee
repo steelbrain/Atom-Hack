@@ -56,7 +56,7 @@ module.exports = (Main)->
         right: e.clientX
         top: e.clientY - (@LineHeight * 0.7)
         bottom: e.clientY + (@LineHeight * 0.7)
-      @Tooltip = new Main.V.TT(Rect,@TooltipContent())
+      @Tooltip = new Main.V.TTV(Rect,@TooltipContent())
       @Tooltip.on 'mouseenter',=>
         clearTimeout @Timeout
         @Tooltip.on 'mouseleave',=>
