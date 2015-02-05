@@ -16,5 +16,12 @@
     "string_score": "latest",
     "atom-message-panel": "latest"
   },
-  "repository": "https://github.com/steelbrain/atom-hack"
+  "repository": "https://github.com/steelbrain/atom-hack",
+  "providedServices": {
+    "autocomplete.provider": {
+      "versions": {
+        "1.0.0": "provide"
+      }
+    }
+  }
 }

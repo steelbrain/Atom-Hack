@@ -1,6 +1,5 @@
 require 'string_score'
 module.exports = (Main)->
-  Instance = null
   Provider =
     exclusive: true
     selector: '.source.php,.source.cpp'
@@ -11,12 +10,7 @@ module.exports = (Main)->
     @points = ['"',"'",' ',')','(',',','{','}','-','+','>','<',';',"\n","\r"]
     @activate:->
       return if Main.Status.AutoComplete
-      Instance = atom.services.provide('autocomplete.provider', '1.0.0', {provider:Provider})
       Main.Status.AutoComplete = true
-    @deactivate:->
-      return unless Main.Status.AutoComplete+
-      Instance.dispose()
-      Main.Status.AutoComplete = false
     @suggestions:(buffer,editor)->
       path = editor.getPath()
       text = buffer.getText()
@@ -44,3 +38,4 @@ module.exports = (Main)->
         LaText.push char
       LaText = LaText.reverse().join('').split('::')
       return LaText[LaText.length-1].trim();
+  return Provider

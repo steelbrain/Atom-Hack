@@ -3,9 +3,6 @@ module.exports =
     enableTypeChecking:
       type: 'boolean'
       default: true
-    enableAutoComplete:
-      type: 'boolean'
-      default: true
     interceptJumpToDeclarationCallsFor:
       type: 'array',
       default: ['C++','PHP']
@@ -31,6 +28,7 @@ module.exports =
     @V.TTV = require('./tooltip-view')(this);
     @V.TT = require('./tooltip')(this);
 
+    console.log "Initializing Atom-Hack"
     require('./cmenu')(this).initialize();
     @V.TT.activate();
     @V.MPI = new @V.MP.MessagePanelView title: "Hack TypeChecker"
@@ -43,11 +41,9 @@ module.exports =
           @V.TC.activate()
         else
           @V.TC.deactivate()
-      atom.config.observe 'Atom-Hack.enableAutoComplete',(status)=>
-        if status
-          @V.AC.activate()
-        else
-          @V.AC.deactivate()
+  provide:->
+    console.log "Gonna give them the provider"
+    {provider: @v.AC}
   deactivate:->
     @V.TC.deactivate();
     @V.AC.deactivate();
