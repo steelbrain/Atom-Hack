@@ -1,5 +1,5 @@
 require 'string_score'
-module.exports = (Main)->
+module.exports = ->
   Provider =
     exclusive: true
     selector: '.source.php,.source.cpp'
@@ -8,9 +8,6 @@ module.exports = (Main)->
       AutoComplete.suggestions(options.buffer,options.editor)
   class AutoComplete
     @points = ['"',"'",' ',')','(',',','{','}','-','+','>','<',';',"\n","\r"]
-    @activate:->
-      return if Main.Status.AutoComplete
-      Main.Status.AutoComplete = true
     @suggestions:(buffer,editor)->
       path = editor.getPath()
       text = buffer.getText()
@@ -18,7 +15,7 @@ module.exports = (Main)->
       text = text.substr(0,index)+'AUTO332'+text.substr(index)
       prefix = @prefix(text,index)
       return new Promise (resolve)->
-        Main.V.H.exec(['--auto-complete'],text,path).then (result)->
+        window.Atom_HACK_H.exec(['--auto-complete'],text,path).then (result)->
           toReturn = []
           result = result.stdout.split("\n").filter((e)-> e)
           score = prefix.length > 0

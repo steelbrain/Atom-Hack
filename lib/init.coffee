@@ -16,15 +16,10 @@ module.exports =
   V:{}
   Status:{}
   activate:->
-    @V.FS = require('fs')
-    @V.Path = require('path')
-    @V.SSH = require('node-ssh')
-    @V.CP = require('child_process')
     @V.MP = require('atom-message-panel')
-    @V.H = require('./h')(this);
+    @V.H = window.Atom_HACK_H = require('./h')(this)
     @V.TC = require('./typechecker')(this);
     @V.TE = require('./typechecker-error')(this);
-    @V.AC = require('./autocomplete')(this);
     @V.TTV = require('./tooltip-view')(this);
     @V.TT = require('./tooltip')(this);
 
@@ -34,7 +29,6 @@ module.exports =
     @V.MPI = new @V.MP.MessagePanelView title: "Hack TypeChecker"
 
     @Status.TypeChecker = false
-    @Status.AutoComplete = false
     @V.H.readConfig().then =>
       atom.config.observe 'Atom-Hack.enableTypeChecking',(status)=>
         if status
@@ -42,11 +36,9 @@ module.exports =
         else
           @V.TC.deactivate()
   provide:->
-    console.log "Gonna give them the provider"
-    {provider: @v.AC}
+    {providers: [require('./autocomplete')()]}
   deactivate:->
     @V.TC.deactivate();
-    @V.AC.deactivate();
     @V.TT.deactivate();
     @Subscriptions.forEach (sub)-> sub.dispose()
     @Subscriptions = []
