@@ -1,4 +1,8 @@
 module.exports = (Main)->
+  FS = require('fs')
+  Path = require('path')
+  SSH = require('node-ssh')
+  ChildProcess = require('child_process')
   class H
     @configDefault: type:'local'
     @config: @configDefault
@@ -6,9 +10,9 @@ module.exports = (Main)->
     @readConfig:->
       return new Promise (resolve,reject)=>
         configPath = atom.project.path + '/.atom-hack'
-        Main.V.FS.exists configPath,(exists)=>
+        FS.exists configPath,(exists)=>
           return resolve() unless exists
-          Main.V.FS.readFile configPath,(_,config)=>
+          FS.readFile configPath,(_,config)=>
             try
               config = JSON.parse(config)
             catch
@@ -17,14 +21,14 @@ module.exports = (Main)->
             config.type = config.type || 'local'
             @config = config
             if config.type is 'remote'
-              @SSH = new Main.V.SSH(config)
+              @SSH = new SSH(config)
               @SSH.connect().then ->
                 resolve()
             else
               resolve()
     @execRemote:(args,input,path)->
       toReturn = stderr:'',stdout:''
-      RemotePath = path.replace(atom.project.path,@config.remoteDir).split(Main.V.Path.sep).join('/')
+      RemotePath = path.replace(atom.project.path,@config.remoteDir).split(Path.sep).join('/')
       command = atom.config.get('Atom-Hack.typeCheckerCommand')
       if input and input.length
         return Promise.resolve(toReturn)
@@ -40,7 +44,7 @@ module.exports = (Main)->
       toReturn = stderr:'',stdout:''
       command = atom.config.get('Atom-Hack.typeCheckerCommand')
       return new Promise (resolve)=>
-        Proc = Main.V.CP.spawn command,args,{cwd:Main.V.Path.dirname(path)}
+        Proc = ChildProcess.spawn command,args,{cwd:Path.dirname(path)}
         if input and input.length
           Proc.stdin.write input
         Proc.stdin.end()

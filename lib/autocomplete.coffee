@@ -1,6 +1,5 @@
 require 'string_score'
-module.exports = (Main)->
-  Instance = null
+module.exports = ->
   Provider =
     exclusive: true
     selector: '.source.php,.source.cpp'
@@ -9,14 +8,6 @@ module.exports = (Main)->
       AutoComplete.suggestions(options.buffer,options.editor)
   class AutoComplete
     @points = ['"',"'",' ',')','(',',','{','}','-','+','>','<',';',"\n","\r"]
-    @activate:->
-      return if Main.Status.AutoComplete
-      Instance = atom.services.provide('autocomplete.provider', '1.0.0', {provider:Provider})
-      Main.Status.AutoComplete = true
-    @deactivate:->
-      return unless Main.Status.AutoComplete+
-      Instance.dispose()
-      Main.Status.AutoComplete = false
     @suggestions:(buffer,editor)->
       path = editor.getPath()
       text = buffer.getText()
@@ -24,7 +15,7 @@ module.exports = (Main)->
       text = text.substr(0,index)+'AUTO332'+text.substr(index)
       prefix = @prefix(text,index)
       return new Promise (resolve)->
-        Main.V.H.exec(['--auto-complete'],text,path).then (result)->
+        window.Atom_HACK_H.exec(['--auto-complete'],text,path).then (result)->
           toReturn = []
           result = result.stdout.split("\n").filter((e)-> e)
           score = prefix.length > 0
@@ -44,3 +35,4 @@ module.exports = (Main)->
         LaText.push char
       LaText = LaText.reverse().join('').split('::')
       return LaText[LaText.length-1].trim();
+  return Provider
