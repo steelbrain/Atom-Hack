@@ -2,7 +2,7 @@ require 'string_score'
 module.exports = ->
   Provider =
     exclusive: true
-    selector: '.source.php,.source.cpp'
+    selector: '.source.php,.source.cpp,.source.hack'
     blacklist: '.comment'
     requestHandler:(options)->
       AutoComplete.suggestions(options.buffer,options.editor)
