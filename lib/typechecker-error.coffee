@@ -1,4 +1,4 @@
-{$, View} = require 'atom'
+{View,$} = require 'space-pen'
 
 module.exports = (Main)->
   class Error
@@ -65,9 +65,9 @@ module.exports = (Main)->
     TooltipContent:->
       Parent = $('<div></div>')
       for Error in @Trace
-        Parent.append @TooltipEntry Error,Parent
+        Parent.append @TooltipEntry Error
       return Parent
-    TooltipEntry:(Error,Parent)->
+    TooltipEntry:(Error)->
       Text = "at Line #{Error.line} Col #{Error.start}"
       if Error.path isnt @ActiveFile
         Text += " in #{Error.path}"
