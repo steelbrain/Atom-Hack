@@ -10,11 +10,12 @@ module.exports = (Main)->
   ScrollTimeout = null
   class TypeChecker
     @activate:->
-      return unless !Main.Status.TypeChecker
+      return unless not Main.Status.TypeChecker
       Main.Status.TypeChecker = true
-      ScrollSubscription = Editor.on 'scroll-top-changed',=>
-        clearTimeout ScrollTimeout
-        ScrollTimeout = setTimeout(@OnScroll.bind(this),100)
+      if Editor
+        ScrollSubscription = Editor.on 'scroll-top-changed',=>
+          clearTimeout ScrollTimeout
+          ScrollTimeout = setTimeout(@OnScroll.bind(this),100)
       Subscriptions.push atom.workspace.observeTextEditors (editor)=>
         editor.buffer.onDidSave (info)=>
           @Lint()
@@ -44,7 +45,7 @@ module.exports = (Main)->
       ScrollSubscription?.dispose()
     @Lint:->
       Main.V.H.exec(['--json'],null,ActiveFile).then (result)=>
-        result = JSON.parse(result.stderr)
+        result = JSON.parse(result.stderr.substr(result.stderr.indexOf('{')))
         Errors = result.errors
         try
           @ProcessErrors()
