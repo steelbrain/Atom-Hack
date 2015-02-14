@@ -76,6 +76,12 @@ module.exports = (Main)->
       Main.V.MPI.clear()
       if LeErrors.length
         Main.V.MPI.attach()
+        # Set a summary
+        Main.V.MPI.add(new Main.V.MP.PlainMessageView(
+          raw: true
+          message: ''
+        ))
+        # Summary part ends
         LeErrors.forEach (error)->
           error.Render(RowStart,RowEnd,ActiveFile,Editor,EditorView,LineHeight)
       else
