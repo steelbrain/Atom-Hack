@@ -12,9 +12,9 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "node-ssh": "latest",
-    "string_score": "latest",
-    "atom-message-panel": "latest"
+    "node-ssh": "0.1.2",
+    "string_score": "0.1.20",
+    "atom-message-panel": "1.2.0"
   },
   "repository": "https://github.com/steelbrain/atom-hack",
   "providedServices": {
