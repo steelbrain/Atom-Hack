@@ -9,7 +9,7 @@ module.exports = (Main)->
     @SSH: null
     @readConfig:->
       return new Promise (resolve,reject)=>
-        configPath = atom.project.path + '/.atom-hack'
+        configPath = atom.project.getPath() + '/.atom-hack'
         FS.exists configPath,(exists)=>
           return resolve() unless exists
           FS.readFile configPath,(_,config)=>
@@ -28,7 +28,7 @@ module.exports = (Main)->
               resolve()
     @execRemote:(args,input,path)->
       toReturn = stderr:'',stdout:''
-      RemotePath = path.replace(atom.project.path,@config.remoteDir).split(Path.sep).join('/')
+      RemotePath = path.replace(atom.project.getPath(),@config.remoteDir).split(Path.sep).join('/')
       command = atom.config.get('Atom-Hack.typeCheckerCommand')
       if input and input.length
         return Promise.resolve(toReturn)
