@@ -8,7 +8,7 @@ module.exports = (Main)->
     @config: @configDefault
     @SSH: null
     @readConfig:->
-      return new Promise (resolve,reject)=>
+      return new Promise (resolve)=>
         configPath = atom.project.getPath() + '/.atom-hack'
         FS.exists configPath,(exists)=>
           return resolve() unless exists
@@ -33,7 +33,7 @@ module.exports = (Main)->
       if input and input.length
         return Promise.resolve(toReturn)
       return new Promise (resolve)=>
-        if @config.autoPush and (RemotePath.substr(-3) is '.hh' or RemotePath.substr(-4) is '.php')
+        if @config.autoPush
           LePromise = @SSH.put(path,RemotePath)
         else
           LePromise = Promise.resolve()
