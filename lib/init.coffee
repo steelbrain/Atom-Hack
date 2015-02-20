@@ -20,10 +20,8 @@ module.exports =
     @V.H = window.Atom_HACK_H = require('./h')(this)
     @V.TE = require('./typechecker-error')(this);
     @V.TTV = require('./tooltip-view')(this);
-    @V.TT = require('./tooltip')(this);
 
     require('./cmenu')(this).initialize();
-    @V.TT.activate();
     @V.MPI = new @V.MP.MessagePanelView title: "Hack TypeChecker"
 
     @Status.TypeChecker = false
@@ -40,6 +38,5 @@ module.exports =
     {providers: [require('./autocomplete')()]}
   deactivate:->
     @V.TC.deactivate();
-    @V.TT.deactivate();
     @Subscriptions.forEach (sub)-> sub.dispose()
     @Subscriptions = []
