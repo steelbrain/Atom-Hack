@@ -47,7 +47,11 @@ module.exports = (Main)->
       ScrollSubscription?.dispose()
     @Lint:->
       Main.V.H.exec(['--json'],null,ActiveFile).then (result)=>
-        result = JSON.parse(result.stderr.substr(result.stderr.indexOf('{')))
+        try
+          result = JSON.parse(result.stderr.substr(result.stderr.indexOf('{')))
+        catch error
+          console.log "Invalid JSON"
+          console.log result
         Errors = result.errors
         try
           @ProcessErrors()
