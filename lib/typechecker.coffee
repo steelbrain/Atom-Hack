@@ -74,7 +74,7 @@ module.exports = (Main)->
           Color = if LeFirst then 'red' else 'blue'
           LeErrors.push new Main.V.TE(I,TraceEntry.path,TraceEntry.line,TraceEntry.start,TraceEntry.end,Color,Error.message)
           LeFirst = false
-      setTimeout @OnScroll.bind(this),70
+      try setTimeout @OnScroll.bind(this),70
     @OnScroll:->
       RowStart = EditorView.getFirstVisibleScreenRow()
       RowEnd = EditorView.getLastVisibleScreenRow()
