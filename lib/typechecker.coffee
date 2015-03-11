@@ -8,6 +8,7 @@ module.exports = (Main)->
   ActiveFile = Editor?.getPath()
   ScrollSubscription = null
   ScrollTimeout = null
+  Path = require 'path'
   class TypeChecker
     @activate:->
       return unless not Main.Status.TypeChecker
@@ -17,7 +18,7 @@ module.exports = (Main)->
           clearTimeout ScrollTimeout
           ScrollTimeout = setTimeout(@OnScroll.bind(this),100)
       Subscriptions.push atom.workspace.observeTextEditors (editor)=>
-        Grammar = editor.getGrammar()
+	    Grammar = editor.getGrammar()
         return unless Grammar or Grammar.name isnt 'PHP' or Grammar.name isnt 'Hack' or Grammar.name isnt 'C++'
         editor.buffer.onDidSave (info)=>
           @Lint()
@@ -47,12 +48,17 @@ module.exports = (Main)->
       ScrollSubscription?.dispose()
     @Lint:->
       Main.V.H.exec(['--json'],null,ActiveFile).then (result)=>
-        try
-          result = JSON.parse(result.stderr.substr(result.stderr.indexOf('{')))
-        catch error
-          console.log "Invalid JSON"
-          console.log result
+        if result.stderr.substr(0,5) is 'Error'
+          setTimeout ->
+            throw new Error(result.stderr.substr(7)); # Throw an error that can not be caught
+          ,0
+          return ;
+        result = JSON.parse(result.stderr.substr(result.stderr.indexOf('{')))
         Errors = result.errors
+        if Main.V.H.config.type is 'remote'
+          Errors.forEach (ErrorEntry)->
+            ErrorEntry.message.forEach (ErrorMessageEntry)->
+              ErrorMessageEntry.path = ErrorMessageEntry.path.replace(Main.V.H.config.remoteDir, atom.project.getPath()).split('/').join(Path.sep)
         try
           @ProcessErrors()
         catch error
@@ -74,7 +80,9 @@ module.exports = (Main)->
           Color = if LeFirst then 'red' else 'blue'
           LeErrors.push new Main.V.TE(I,TraceEntry.path,TraceEntry.line,TraceEntry.start,TraceEntry.end,Color,Error.message)
           LeFirst = false
-      try setTimeout @OnScroll.bind(this),70
+      setTimeout =>
+		try @OnScroll.bind(this)
+	  ,70
     @OnScroll:->
       RowStart = EditorView.getFirstVisibleScreenRow()
       RowEnd = EditorView.getLastVisibleScreenRow()
