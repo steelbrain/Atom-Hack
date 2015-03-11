@@ -53,7 +53,15 @@ module.exports = (Main)->
             throw new Error(result.stderr.substr(7)); # Throw an error that can not be caught
           ,0
           return ;
+<<<<<<< HEAD
         result = JSON.parse(result.stderr.substr(result.stderr.indexOf('{')))
+=======
+        try
+          result = JSON.parse(result.stderr.substr(result.stderr.indexOf('{')))
+        catch error
+          console.log "Invalid JSON"
+          console.log result
+>>>>>>> revert
         Errors = result.errors
         if Main.V.H.config.type is 'remote'
           Errors.forEach (ErrorEntry)->
@@ -81,8 +89,13 @@ module.exports = (Main)->
           LeErrors.push new Main.V.TE(I,TraceEntry.path,TraceEntry.line,TraceEntry.start,TraceEntry.end,Color,Error.message)
           LeFirst = false
       setTimeout =>
+<<<<<<< HEAD
 		try @OnScroll.bind(this)
 	  ,70
+=======
+        try @OnScroll.call(this)
+      ,70
+>>>>>>> revert
     @OnScroll:->
       RowStart = EditorView.getFirstVisibleScreenRow()
       RowEnd = EditorView.getLastVisibleScreenRow()
