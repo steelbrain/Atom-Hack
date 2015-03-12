@@ -16,26 +16,24 @@ module.exports =
   V:{}
   Status:{}
   activate:->
+    @V.MP = require('atom-message-panel')
+    @V.H = window.Atom_HACK_H = require('./h')(this)
+    @V.TE = require('./typechecker-error')(this);
+    @V.TTV = require('./tooltip-view')(this);
+
+    require('./cmenu')(this).initialize();
+    @V.MPI = new @V.MP.MessagePanelView title: "Hack TypeChecker"
+
+    @Status.TypeChecker = false
     setTimeout =>
-      @V.MP = require('atom-message-panel')
-      @V.H = window.Atom_HACK_H = require('./h')(this)
-      @V.TE = require('./typechecker-error')(this);
-      @V.TTV = require('./tooltip-view')(this);
-
-      require('./cmenu')(this).initialize();
-      @V.MPI = new @V.MP.MessagePanelView title: "Hack TypeChecker"
-
-      @Status.TypeChecker = false
       @V.H.readConfig().then =>
-        setTimeout =>
-          @V.TC = require('./typechecker')(this);
-          atom.config.observe 'Atom-Hack.enableTypeChecking',(status)=>
-            if status
-              @V.TC.activate()
-            else
-              @V.TC.deactivate()
-        ,500
-    ,2000
+        @V.TC = require('./typechecker')(this);
+        atom.config.observe 'Atom-Hack.enableTypeChecking',(status)=>
+          if status
+            @V.TC.activate()
+          else
+            @V.TC.deactivate()
+    ,1000
   provide:->
     {providers: [require('./autocomplete')()]}
   deactivate:->
