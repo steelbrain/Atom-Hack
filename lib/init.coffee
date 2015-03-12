@@ -25,15 +25,15 @@ module.exports =
     @V.MPI = new @V.MP.MessagePanelView title: "Hack TypeChecker"
 
     @Status.TypeChecker = false
-    @V.H.readConfig().then =>
-      setTimeout =>
+    setTimeout =>
+      @V.H.readConfig().then =>
         @V.TC = require('./typechecker')(this);
         atom.config.observe 'Atom-Hack.enableTypeChecking',(status)=>
           if status
             @V.TC.activate()
           else
             @V.TC.deactivate()
-      ,500
+    ,1000
   provide:->
     {providers: [require('./autocomplete')()]}
   deactivate:->

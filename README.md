@@ -20,6 +20,7 @@ By default Atom-Hack assumes that HHVM is installed locally and needs zero-confi
   "type":"remote",
   "host":"Remote Host's Domain or IP",
   "username":"Your Username",
+  "passphrase":"Your passphrase (Or exclude this line if you do not have one)",
   "port":22,
   "privateKey":"Full Path to Private Key",
   "remoteDir":"Directory on the remote server without the last slash",
