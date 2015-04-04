@@ -19,7 +19,7 @@ module.exports = (Main)->
           ScrollTimeout = setTimeout(@OnScroll.bind(this),100)
       Subscriptions.push atom.workspace.observeTextEditors (editor)=>
         Grammar = editor.getGrammar()
-        return unless Grammar or Grammar.name isnt 'PHP' or Grammar.name isnt 'Hack' or Grammar.name isnt 'C++'
+        if !Grammar or ['PHP', 'Hack', 'C++'].indexOf(Grammar.name) is -1 then return ;
         editor.buffer.onDidSave (info)=>
           @Lint()
       Subscriptions.push atom.workspace.onDidChangeActivePaneItem =>
