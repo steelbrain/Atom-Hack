@@ -17,7 +17,7 @@ module.exports =
   Status:{}
   activate:->
     @V.MP = require('atom-message-panel')
-    @V.H = window.Atom_HACK_H = require('./h')(this)
+    @V.H = require('./h')(this)
     @V.TE = require('./typechecker-error')(this);
     @V.TTV = require('./tooltip-view')(this);
 
@@ -34,8 +34,6 @@ module.exports =
           else
             @V.TC.deactivate()
     ,1000
-  provide:->
-    {providers: [require('./autocomplete')()]}
   deactivate:->
     @V.TC.deactivate();
     @Subscriptions.forEach (sub)-> sub.dispose()

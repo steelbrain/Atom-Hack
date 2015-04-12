@@ -17,12 +17,5 @@
     "atom-message-panel": "latest",
     "space-pen": "latest"
   },
-  "repository": "https://github.com/steelbrain/atom-hack",
-  "providedServices": {
-    "autocomplete.provider": {
-      "versions": {
-        "1.1.0": "provide"
-      }
-    }
-  }
+  "repository": "https://github.com/steelbrain/atom-hack"
 }

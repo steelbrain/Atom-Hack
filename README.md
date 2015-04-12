@@ -2,6 +2,7 @@
 
 
 [HackLang](https://github.com/facebook/hhvm) support for [Atom editor](http://atom.io).
+AutoComplete has split into a separate Package [Hack-AutoComplete][HA].
 
 ## Preview
 ![Preview](https://cloud.githubusercontent.com/assets/4278113/5449170/4b1597b2-8512-11e4-86f0-2ac210f68263.png)
@@ -31,17 +32,14 @@ This plugin will validate all .hh, .php files and the files starting with <?hh o
 
 __Note__: Make sure to restart your Atom Editor after changing your configuration file.
 
-__Note__: If you're using a remote server, this package will automatically upload your files to the remote Server
-
 ## Features
 
  * Validation
  * Remote SSH Servers
  * Remote SFTP Deployment
- * Auto-Complete
- * Fancy Error Reporting
- * Jump to Declaration
 
 ## License
 
 MIT License © steelbrain
+
+[HA]:https://github.com/steelbrain/AutoComplete-Hack
