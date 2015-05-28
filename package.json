@@ -16,7 +16,7 @@
   },
   "repository": "https://github.com/steelbrain/atom-hack",
   "providedServices": {
-    "linter.plus": {
+    "linter-plus": {
       "versions": {
         "0.1.0": "provideLinter"
       }
