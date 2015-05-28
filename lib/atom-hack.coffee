@@ -14,7 +14,7 @@ module.exports = LinterHack =
     Path = require 'path'
     return {
       scopes: ['source.hack']
-      lint: (ActiveEditor, _, {Error, Trace})->
+      lint: (ActiveEditor)->
         return new Promise (Resolve)->
           FilePath = ActiveEditor.getPath()
           return unless FilePath # Files that have not be saved
@@ -29,10 +29,21 @@ module.exports = LinterHack =
             ToReturn = []
             Content.errors.forEach (ErrorEntry)->
               ErrorEntry = ErrorEntry.message
-              First = ErrorEntry[0]
+              First = ErrorEntry.shift()
               Traces = []
-              for Message in ErrorEntry.slice(1)
-                Traces.push new Trace Message.descr, Message.path, [[Message.line,Message.start],[Message.line,Message.end]]
-              ToReturn.push new Error First.descr, First.path, [[First.line,First.start],[First.line,First.end]], Traces
+              for Message in ErrorEntry
+                Traces.push(
+                  Type: 'Trace',
+                  Message: Message.descr,
+                  File: Message.path,
+                  Position: [[Message.line,Message.start],[Message.line,Message.end]]
+                )
+              ToReturn.push(
+                Type: 'Error',
+                Message: First.descr,
+                File: First.path,
+                Position: [[First.line,First.start],[First.line,First.end]]
+                Trace: Traces
+              )
             Resolve(ToReturn)
     }
