@@ -13,7 +13,9 @@ module.exports = LinterHack =
     CP = require 'child_process'
     Path = require 'path'
     return {
-      scopes: ['source.hack']
+      scopes: ['source.hack', 'source.html.hack']
+      scope: 'project'
+      lintOnFly: false
       lint: (ActiveEditor)->
         return new Promise (Resolve)->
           FilePath = ActiveEditor.getPath()
@@ -33,17 +35,17 @@ module.exports = LinterHack =
               Traces = []
               for Message in ErrorEntry
                 Traces.push(
-                  Type: 'Trace',
-                  Message: Message.descr,
-                  File: Message.path,
-                  Position: [[Message.line,Message.start],[Message.line,Message.end]]
+                  type: 'Trace',
+                  message: Message.descr,
+                  file: Message.path,
+                  position: [[Message.line,Message.start],[Message.line,Message.end]]
                 )
               ToReturn.push(
-                Type: 'Error',
-                Message: First.descr,
-                File: First.path,
-                Position: [[First.line,First.start],[First.line,First.end]]
-                Trace: Traces
+                type: 'Error',
+                message: First.descr,
+                file: First.path,
+                position: [[First.line,First.start],[First.line,First.end]]
+                trace: Traces
               )
             Resolve(ToReturn)
     }
