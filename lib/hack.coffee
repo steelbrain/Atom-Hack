@@ -5,6 +5,7 @@ FS = require('fs')
 module.exports = class Hack
   config: type:'local', status:true
   SSH: null
+  SFTP: null
   constructor: ->
     ProjectPaths = atom.project.getPaths()
     return unless ProjectPaths.length
@@ -34,10 +35,20 @@ module.exports = class Hack
       catch error
         return @showError(error.toString())
       @SSH.connect().then( =>
-        @showSuccess("AutoComplete - Successfully Connected to Server")
+        @showSuccess("Successfully Connected to Server")
       , (e)=>
-        @showError("AutoComplete - Error Connecting to Server: " + e.toString())
+        @showError("Error Connecting to Server: " + e.toString())
       )
+  transfer: (LocalPath)->
+    return new Promise (Resolve, Reject)=>
+      RemotePath = @config.remoteDir + '/' + Path.relative(atom.project.getPaths()[0], LocalPath).replace(Path.sep, '/')
+      if @SFTP is null
+        LePromise = @SSH.requestSFTP()
+      else
+        LePromise = Promise.resolve(@SFTP)
+      LePromise.then (SFTP)=>
+        @SFTP = SFTP
+        @SSH.put(LocalPath, RemotePath, SFTP, true).then(Resolve, Reject)
   showError:(Message)->
     Notification = atom.notifications.addError("[Hack] #{Message}", {dismissable: true})
     setTimeout ->
