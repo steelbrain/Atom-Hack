@@ -15,20 +15,7 @@ apm install atom-hack
 
 ## Usage
 
-By default Atom-Hack assumes that HHVM is installed locally and needs zero-configuration if that's the case. But in case the server is remote, Please add this configuration to your `Project Root/.atom-hack` (autoPush means auto-upload file to remote server onSave)
-```js
-{
-  "type":"remote",
-  "host":"Remote Host's Domain or IP",
-  "username":"Your Username",
-  "passphrase":"Your passphrase (Or exclude this line if you do not have one)",
-  "port":22,
-  "privateKey":"Full Path to Private Key",
-  "remoteDir":"Directory on the remote server without the last slash",
-  "autoPush":false
-}
-```
-This plugin will validate all .hh, .php files and the files starting with <?hh or <?php
+By default Atom-Hack assumes that HHVM is installed locally and needs zero-configuration if that's the case. But in case the server is remote, Please add your [configuration][1] to the `.atom-hack` file in your Project root.
 
 __Note__: Make sure to restart your Atom Editor after changing your configuration file.
 
@@ -43,3 +30,4 @@ __Note__: Make sure to restart your Atom Editor after changing your configuratio
 MIT License © steelbrain
 
 [AH]:https://github.com/steelbrain/AutoComplete-Hack
+[1]:wiki/Configuration
