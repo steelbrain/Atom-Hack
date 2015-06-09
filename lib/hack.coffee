@@ -15,12 +15,13 @@ module.exports = class Hack
     catch
       if process.platform is 'win32' then @showError("Could not find a .atom-hack config file")
       return
+    @config.status = false
     FS.readFile configPath, (_, Contents)=>
       Contents = Contents.toString()
       try
         Contents = JSON.parse(Contents)
       catch then return @showError("Your .atom-hack file contains invalid JSON");
-      Contents.status = true
+      Contents.status = false
       Contents.type = Contents.type || 'remote'
       Contents.port = Contents.port || 22
       @config = Contents
@@ -35,6 +36,7 @@ module.exports = class Hack
       catch error
         return @showError(error.toString())
       @SSH.connect().then( =>
+        Contents.status = true
         @showSuccess("Successfully Connected to Server")
       , (e)=>
         @showError("Error Connecting to Server: " + e.toString())
