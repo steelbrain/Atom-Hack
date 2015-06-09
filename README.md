@@ -23,11 +23,11 @@ __Note__: Make sure to restart your Atom Editor after changing your configuratio
 
  * Validation
  * Remote SSH Servers
- * Remote SFTP Deployment
+ * Remote SFTP Upload
 
 ## License
 
 MIT License © steelbrain
 
 [AH]:https://github.com/steelbrain/AutoComplete-Hack
-[1]:wiki/Configuration
+[1]:https://github.com/steelbrain/Atom-Hack/wiki/Configuration
