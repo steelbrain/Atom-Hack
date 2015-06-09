@@ -14,6 +14,11 @@ module.exports = LinterHack =
       scopes: ['source.hack', 'source.html.hack']
       scope: 'project'
       lintOnFly: false
+      normalizePath: (FilePath)->
+        if LinterHack.Hack.config.type is 'local'
+          return FilePath
+        else
+          Path.join(atom.project.getPaths()[0], Path.relative(LinterHack.Hack.config.remoteDir, FilePath).replace('/', Path.sep))
       formatErrors: (Content)->
         ToReturn = []
         Content.errors.forEach (ErrorEntry)->
@@ -24,13 +29,13 @@ module.exports = LinterHack =
             Traces.push(
               type: 'Trace',
               message: Message.descr,
-              file: Message.path,
+              file: Linter.normalizePath(Message.path),
               position: [[Message.line,Message.start],[Message.line,Message.end]]
             )
           ToReturn.push(
             type: 'Error',
             message: First.descr,
-            file: First.path,
+            file: Linter.normalizePath(First.path),
             position: [[First.line,First.start],[First.line,First.end]]
             trace: Traces
           )
