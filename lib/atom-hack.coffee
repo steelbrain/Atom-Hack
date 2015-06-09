@@ -3,7 +3,9 @@ module.exports = LinterHack =
   Hack: null
   activate: ->
     if typeof atom.packages.getLoadedPackage("linter-plus") is 'undefined'
-      return atom.notificatons.addError "linter-plus package not found or deactivated but is required to provide support for Hack", {dismissable: true}
+      return atom.notificatons.addError "[Hack] linter-plus package not found or deactivated but is required to provide support for Hack", {dismissable: true}
+    else if typeof atom.packages.getLoadedPackage("language-hack") is 'undefined'
+      return atom.notificatons.addError "[Hack] language-hack package not found or deactivated but is required to provide support for Hack", {dismissable: true}
     @Hack = new (require './hack')
   provideHack: ->
     @Hack
