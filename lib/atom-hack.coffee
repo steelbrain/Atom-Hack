@@ -1,13 +1,18 @@
 
 module.exports = LinterHack =
+  Hack: null
   activate: ->
     if typeof atom.packages.getLoadedPackage("linter-plus") is 'undefined'
-      return @showError "[Hack] linter-plus package not found but is required to provide validations for Hack Files"
+      return @showError "linter-plus package not found or deactivated but is required to provide support for Hack"
+    HackClass = require './hack'
+    @Hack = new HackClass
   showError:(Message)->
-    Dismissible = atom.notifications.addError Message, {dismissable: true}
+    Dismissible = atom.notifications.addError "[Hack] " + Message, {dismissable: true}
     setTimeout ->
       Dismissible.dismiss()
     , 5000
+  provideHack: ->
+    @Hack
   provideLinter:->
     CP = require 'child_process'
     Path = require 'path'
