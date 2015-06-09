@@ -68,6 +68,6 @@ module.exports = class Hack
         @SSH.exec(Command, {cwd: CWD}).then Resolve
       else
         CP.exec(Command, {cwd: CWD}, (error, stdout, stderr)->
-          return Reject(error) if error
+          return Reject(error) if error and not stderr
           Resolve({stdout, stderr});
         )
