@@ -5,7 +5,7 @@
 AutoComplete has split into a separate Package [AutoComplete-Hack][AH].
 
 ## Preview
-![Preview](https://cloud.githubusercontent.com/assets/4278113/5449170/4b1597b2-8512-11e4-86f0-2ac210f68263.png)
+![Preview](https://cloud.githubusercontent.com/assets/4278113/8051890/80620880-0e36-11e5-95de-0ac04cbdf66e.png)
 
 ## Installation
 
