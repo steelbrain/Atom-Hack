@@ -3,7 +3,6 @@ module.exports = LinterHack =
   activate: ->
     if typeof atom.packages.getLoadedPackage("linter-plus") is 'undefined'
       return @showError "[Hack] linter-plus package not found but is required to provide validations for Hack Files"
-  deactivate: ->
   showError:(Message)->
     Dismissible = atom.notifications.addError Message, {dismissable: true}
     setTimeout ->
