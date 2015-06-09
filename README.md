@@ -2,6 +2,7 @@
 
 
 [HackLang](https://github.com/facebook/hhvm) support for [Atom editor](http://atom.io).
+
 AutoComplete has split into a separate Package [AutoComplete-Hack][AH].
 
 ## Preview
