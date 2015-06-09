@@ -24,7 +24,6 @@ module.exports = class Hack
       Contents.status = false
       Contents.type = Contents.type || 'remote'
       Contents.port = Contents.port || 22
-      @config = Contents
       return unless Contents.type is 'remote'
       return @showError("Please specify a privateKey") unless Contents.privateKey
       return @showError("Please specify a remoteDir") unless Contents.remoteDir
@@ -35,8 +34,13 @@ module.exports = class Hack
         @SSH = new (require('node-ssh'))(Contents)
       catch error
         return @showError(error.toString())
+      @config = Contents
       @SSH.connect().then( =>
-        Contents.status = true
+        @SSH.requestSFTP().then (SFTP) =>
+          Contents.status = true
+          @SFTP = SFTP
+        , (e)=>
+          @showError("Error requesting SFTP Object: " + e.toString())
         @showSuccess("Successfully Connected to Server")
       , (e)=>
         @showError("Error Connecting to Server: " + e.toString())
@@ -44,13 +48,7 @@ module.exports = class Hack
   transfer: (LocalPath)->
     return new Promise (Resolve, Reject)=>
       RemotePath = @config.remoteDir + '/' + Path.relative(atom.project.getPaths()[0], LocalPath).replace(Path.sep, '/')
-      if @SFTP is null
-        LePromise = @SSH.requestSFTP()
-      else
-        LePromise = Promise.resolve(@SFTP)
-      LePromise.then (SFTP)=>
-        @SFTP = SFTP
-        @SSH.put(LocalPath, RemotePath, SFTP, true).then(Resolve, Reject)
+      @SSH.put(LocalPath, RemotePath, @SFTP, true).then(Resolve, Reject)
   showError:(Message)->
     Notification = atom.notifications.addError("[Hack] #{Message}", {dismissable: true})
     setTimeout ->
