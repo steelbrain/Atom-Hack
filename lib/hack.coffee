@@ -39,9 +39,9 @@ module.exports = class Hack
         @SSH.requestSFTP().then (SFTP) =>
           Contents.status = true
           @SFTP = SFTP
+          @showSuccess("Successfully Connected to Server")
         , (e)=>
           @showError("Error requesting SFTP Object: " + e.toString())
-        @showSuccess("Successfully Connected to Server")
       , (e)=>
         @showError("Error Connecting to Server: " + e.toString())
       )
@@ -50,20 +50,14 @@ module.exports = class Hack
       RemotePath = @config.remoteDir + '/' + Path.relative(atom.project.getPaths()[0], LocalPath).replace(Path.sep, '/')
       @SSH.put(LocalPath, RemotePath, @SFTP, true).then(Resolve, Reject)
   showError:(Message)->
-    Notification = atom.notifications.addError("[Hack] #{Message}", {dismissable: true})
-    setTimeout ->
-      Notification.dismiss()
-    , 5000
+    atom.notifications.addError("[Hack] #{Message}", {dismissable: true})
   showSuccess:(Message)->
-    Notification = atom.notifications.addSuccess("[Hack] #{Message}", {dismissable: true})
-    setTimeout ->
-      Notification.dismiss()
-    , 5000
+    atom.notifications.addSuccess("[Hack] #{Message}", {dismissable: true})
   exec:(Command, CWD)->
     return new Promise (Resolve, Reject)=>
       if @config.type is 'remote'
         CWD = @config.remoteDir + '/' + Path.relative(atom.project.getPaths()[0], CWD).replace(Path.sep, '/');
-        @SSH.exec(Command, {cwd: CWD}).then Resolve
+        @SSH.exec(Command, {cwd: CWD}).then Resolve, Reject
       else
         CP.exec(Command, {cwd: CWD}, (error, stdout, stderr)->
           return Reject(error) if error and not stderr
