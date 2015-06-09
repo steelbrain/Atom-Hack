@@ -9,7 +9,7 @@ module.exports = LinterHack =
     @Hack
   provideLinter:->
     Path = require 'path'
-    return Linter = {
+    Linter = {
       scopes: ['source.hack', 'source.html.hack']
       scope: 'project'
       lintOnFly: false
