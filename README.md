@@ -2,7 +2,7 @@
 
 
 [HackLang](https://github.com/facebook/hhvm) support for [Atom editor](http://atom.io).
-AutoComplete has split into a separate Package [Hack-AutoComplete][HA].
+AutoComplete has split into a separate Package [AutoComplete-Hack][AH].
 
 ## Preview
 ![Preview](https://cloud.githubusercontent.com/assets/4278113/5449170/4b1597b2-8512-11e4-86f0-2ac210f68263.png)
@@ -42,4 +42,4 @@ __Note__: Make sure to restart your Atom Editor after changing your configuratio
 
 MIT License © steelbrain
 
-[HA]:https://github.com/steelbrain/AutoComplete-Hack
+[AH]:https://github.com/steelbrain/AutoComplete-Hack
