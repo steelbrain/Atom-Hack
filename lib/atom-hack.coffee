@@ -39,7 +39,7 @@ module.exports = LinterHack =
         return new Promise (Resolve)->
           FilePath = ActiveEditor.getPath()
           return Resolve([]) unless FilePath or LinterHack.Hack.config.status # Files that have not be saved
-          if LinterHack.Hack.config.type is 'local'
+          if LinterHack.Hack.config.type is 'local' or not LinterHack.Hack.config.autoPush
             LePromise = LinterHack.Hack.exec('hh_client --json', Path.dirname(FilePath))
           else
             LePromise = LinterHack.Hack.transfer(FilePath).then ->
@@ -50,4 +50,7 @@ module.exports = LinterHack =
             catch error then return Resolve([])# Ignore weird errors for now
             if Content.passed then Resolve([])
             else Resolve(Linter.formatErrors(Content))
+          , (Error)->
+            Resolve([])
+            atom.notifications.addError Error.toString(), {dismissible: true}
     }
