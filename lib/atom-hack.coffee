@@ -2,8 +2,8 @@
 module.exports = LinterHack =
   Hack: null
   activate: ->
-    if typeof atom.packages.getLoadedPackage("linter-plus") is 'undefined'
-      return atom.notifications.addError "[Hack] linter-plus package not found or deactivated but is required to provide support for Hack", {dismissable: true}
+    if typeof atom.packages.getLoadedPackage("linter") is 'undefined'
+      return atom.notifications.addError "[Hack] linter package not found or deactivated but is required to provide support for Hack", {dismissable: true}
     else if typeof atom.packages.getLoadedPackage("language-hack") is 'undefined'
       return atom.notifications.addError "[Hack] language-hack package not found or deactivated but is required to provide support for Hack", {dismissable: true}
     @Hack = new (require './hack')
@@ -12,7 +12,7 @@ module.exports = LinterHack =
   provideLinter:->
     Path = require 'path'
     Linter = {
-      scopes: ['source.hack', 'source.html.hack']
+      grammarScopes: ['source.hack', 'source.html.hack']
       scope: 'project'
       lintOnFly: false
       normalizePath: (FilePath)->
@@ -29,15 +29,15 @@ module.exports = LinterHack =
           for Message in ErrorEntry
             Traces.push(
               type: 'Trace',
-              message: Message.descr,
-              file: Linter.normalizePath(Message.path),
-              position: [[Message.line,Message.start],[Message.line,Message.end]]
+              text: Message.descr,
+              filePath: Linter.normalizePath(Message.path),
+              range: [[Message.line - 1,Message.start - 1 ],[Message.line - 1 ,Message.end]]
             )
           ToReturn.push(
             type: 'Error',
-            message: First.descr,
-            file: Linter.normalizePath(First.path),
-            position: [[First.line,First.start],[First.line,First.end]]
+            text: First.descr,
+            filePath: Linter.normalizePath(First.path),
+            range: [[First.line - 1, First.start - 1 ],[First.line - 1,First.end]]
             trace: Traces
           )
         ToReturn
