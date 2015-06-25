@@ -2,6 +2,7 @@
 module.exports = LinterHack =
   Hack: null
   activate: ->
+    @Hack = new (require './hack')
     if typeof atom.packages.getLoadedPackage("linter") is 'undefined'
       return atom.notifications.addError "[Hack] linter package not found or deactivated but is required to provide support for Hack", {dismissable: true}
     else if typeof atom.packages.getLoadedPackage("language-hack") is 'undefined'
@@ -11,7 +12,7 @@ module.exports = LinterHack =
     @Hack
   provideLinter:->
     Path = require 'path'
-    LinterHack = {
+    Linter = {
       grammarScopes: ['source.hack', 'source.html.hack']
       scope: 'project'
       lintOnFly: false
@@ -30,13 +31,13 @@ module.exports = LinterHack =
             Traces.push(
               type: 'Trace',
               text: Message.descr,
-              filePath: LinterHack.normalizePath(Message.path),
+              filePath: Linter.normalizePath(Message.path),
               range: [[Message.line - 1,Message.start - 1 ],[Message.line - 1 ,Message.end]]
             )
           ToReturn.push(
             type: 'Error',
             text: First.descr,
-            filePath: LinterHack.normalizePath(First.path),
+            filePath: Linter.normalizePath(First.path),
             range: [[First.line - 1, First.start - 1 ],[First.line - 1,First.end]]
             trace: Traces
           )
@@ -55,7 +56,7 @@ module.exports = LinterHack =
               Content = JSON.parse(Data.stderr)
             catch error then return Resolve([])# Ignore weird errors for now
             if Content.passed then Resolve([])
-            else Resolve(LinterHack.formatErrors(Content))
+            else Resolve(Linter.formatErrors(Content))
           , (Error)->
             Resolve([])
             atom.notifications.addError Error.toString(), {dismissible: true}
