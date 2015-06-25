@@ -11,7 +11,7 @@ module.exports = LinterHack =
     @Hack
   provideLinter:->
     Path = require 'path'
-    Linter = {
+    LinterHack = {
       grammarScopes: ['source.hack', 'source.html.hack']
       scope: 'project'
       lintOnFly: false
@@ -30,13 +30,13 @@ module.exports = LinterHack =
             Traces.push(
               type: 'Trace',
               text: Message.descr,
-              filePath: Linter.normalizePath(Message.path),
+              filePath: LinterHack.normalizePath(Message.path),
               range: [[Message.line - 1,Message.start - 1 ],[Message.line - 1 ,Message.end]]
             )
           ToReturn.push(
             type: 'Error',
             text: First.descr,
-            filePath: Linter.normalizePath(First.path),
+            filePath: LinterHack.normalizePath(First.path),
             range: [[First.line - 1, First.start - 1 ],[First.line - 1,First.end]]
             trace: Traces
           )
@@ -55,7 +55,7 @@ module.exports = LinterHack =
               Content = JSON.parse(Data.stderr)
             catch error then return Resolve([])# Ignore weird errors for now
             if Content.passed then Resolve([])
-            else Resolve(Linter.formatErrors(Content))
+            else Resolve(LinterHack.formatErrors(Content))
           , (Error)->
             Resolve([])
             atom.notifications.addError Error.toString(), {dismissible: true}
