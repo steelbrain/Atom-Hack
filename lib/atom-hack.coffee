@@ -18,7 +18,7 @@ module.exports = AtomHack =
       lintOnFly: false
       normalizePath: (FilePath)->
         if AtomHack.Hack.config.type is 'local'
-          return FilePath
+          FilePath
         else
           Path.join(atom.project.getPaths()[0], Path.relative(AtomHack.Hack.config.remoteDir, FilePath).replace('/', Path.sep))
       formatErrors: (Content)->
