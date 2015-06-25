@@ -1,5 +1,5 @@
 
-module.exports = LinterHack =
+module.exports = AtomHack =
   Hack: null
   activate: ->
     @Hack = new (require './hack')
@@ -17,10 +17,10 @@ module.exports = LinterHack =
       scope: 'project'
       lintOnFly: false
       normalizePath: (FilePath)->
-        if LinterHack.Hack.config.type is 'local'
+        if AtomHack.Hack.config.type is 'local'
           return FilePath
         else
-          Path.join(atom.project.getPaths()[0], Path.relative(LinterHack.Hack.config.remoteDir, FilePath).replace('/', Path.sep))
+          Path.join(atom.project.getPaths()[0], Path.relative(AtomHack.Hack.config.remoteDir, FilePath).replace('/', Path.sep))
       formatErrors: (Content)->
         ToReturn = []
         Content.errors.forEach (ErrorEntry)->
@@ -45,12 +45,12 @@ module.exports = LinterHack =
       lint: (ActiveEditor)->
         return new Promise (Resolve)->
           FilePath = ActiveEditor.getPath()
-          return Resolve([]) unless FilePath or LinterHack.Hack.config.status # Files that have not be saved
-          if LinterHack.Hack.config.type is 'local' or not LinterHack.Hack.config.autoPush
-            LePromise = LinterHack.Hack.exec('hh_client --json', Path.dirname(FilePath))
+          return Resolve([]) unless FilePath or AtomHack.Hack.config.status # Files that have not be saved
+          if AtomHack.Hack.config.type is 'local' or not AtomHack.Hack.config.autoPush
+            LePromise = AtomHack.Hack.exec('hh_client --json', Path.dirname(FilePath))
           else
-            LePromise = LinterHack.Hack.transfer(FilePath).then ->
-              LinterHack.Hack.exec('hh_client --json', Path.dirname(FilePath))
+            LePromise = AtomHack.Hack.transfer(FilePath).then ->
+              AtomHack.Hack.exec('hh_client --json', Path.dirname(FilePath))
           LePromise.then (Data)->
             try
               Content = JSON.parse(Data.stderr)
