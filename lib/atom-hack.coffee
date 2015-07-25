@@ -47,7 +47,7 @@ module.exports = AtomHack =
           FilePath = ActiveEditor.getPath()
           return Resolve([]) unless FilePath or AtomHack.Hack.config.status # Files that have not be saved
           if AtomHack.Hack.config.type is 'local' or not AtomHack.Hack.config.autoPush
-            FileName = FilePath.split('/').pop();
+            FileName = FilePath.split(Path.sep).pop();
             LePromise = AtomHack.Hack.exec('touch ' + FileName, Path.dirname(FilePath)).then ->
                 AtomHack.Hack.exec('hh_client --json', Path.dirname(FilePath))
           else
