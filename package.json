@@ -1,6 +1,6 @@
 {
   "name": "Atom-Hack",
-  "main": "./lib/main",
+  "main": "./lib/main.js",
   "version": "6.1.6",
   "description": "HackLang support for Atom Editor",
   "author": {
