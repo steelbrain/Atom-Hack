@@ -20,7 +20,6 @@
   },
   "package-deps": [
     "linter",
-    "declarations",
     "language-hack"
   ],
   "repository": "https://github.com/steelbrain/atom-hack",
@@ -33,11 +32,6 @@
     "atom-hack": {
       "versions": {
         "1.0.0": "provideDelegateRegistry"
-      }
-    },
-    "declarations": {
-      "versions": {
-        "1.0.0": "provideDeclarations"
       }
     }
   },
