@@ -14,7 +14,7 @@
   "dependencies": {
     "atom-package-deps": "^4.3.1",
     "node-ssh": "^3.0.1",
-    "sb-exec": "^3.0.1",
+    "sb-exec": "^3.0.2",
     "sb-promisify": "^2.0.1",
     "shell-escape": "^0.2.0"
   },
@@ -39,7 +39,7 @@
     "eslint-config-steelbrain": "^1.0.4",
     "flow-bin": "^0.32.0"
   },
-  "packageConfig": {
+  "configSchema": {
     "supportBashOnWindows": {
       "title": "Enable support for Bash on Windows",
       "type": "boolean",
