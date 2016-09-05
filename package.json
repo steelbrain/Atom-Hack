@@ -37,5 +37,12 @@
   "devDependencies": {
     "eslint-config-steelbrain": "^1.0.4",
     "flow-bin": "^0.32.0"
+  },
+  "packageConfig": {
+    "supportBashOnWindows": {
+      "title": "Enable support for Bash on Windows",
+      "type": "boolean",
+      "default": true
+    }
   }
 }
