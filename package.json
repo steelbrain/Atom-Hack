@@ -1,21 +1,22 @@
 {
   "name": "Atom-Hack",
-  "main": "./lib/main.js",
+  "main": "./lib/index.js",
   "version": "6.1.7",
   "description": "HackLang support for Atom Editor",
-  "author": {
-    "name": "SteelBrain",
-    "email": "aneesiqbalbhatti@gmail.com"
-  },
+  "author": "steelbrain",
   "license": "MIT",
   "engines": {
-    "atom": ">=1.0.0"
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "scripts": {
+    "test": "(flow check) && (eslint . )"
   },
   "dependencies": {
-    "atom-linter": "^8.0.0",
     "atom-package-deps": "^4.3.1",
-    "node-ssh": "^2.0.7",
-    "sb-promisify": "^1.1.1"
+    "node-ssh": "^3.0.1",
+    "sb-exec": "^3.0.2",
+    "sb-promisify": "^2.0.1",
+    "shell-escape": "^0.2.0"
   },
   "package-deps": [
     "linter",
@@ -30,8 +31,19 @@
     },
     "atom-hack": {
       "versions": {
-        "0.1.0": "provideHack"
+        "1.0.0": "provideDelegateRegistry"
       }
+    }
+  },
+  "devDependencies": {
+    "eslint-config-steelbrain": "^1.0.4",
+    "flow-bin": "^0.32.0"
+  },
+  "configSchema": {
+    "supportBashOnWindows": {
+      "title": "Enable support for Bash on Windows",
+      "type": "boolean",
+      "default": true
     }
   }
 }
