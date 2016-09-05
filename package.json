@@ -1,6 +1,6 @@
 {
   "name": "Atom-Hack",
-  "main": "./lib/main.js",
+  "main": "./lib/index.js",
   "version": "6.1.7",
   "description": "HackLang support for Atom Editor",
   "author": "steelbrain",
@@ -20,6 +20,7 @@
   },
   "package-deps": [
     "linter",
+    "declarations",
     "language-hack"
   ],
   "repository": "https://github.com/steelbrain/atom-hack",
@@ -32,6 +33,11 @@
     "atom-hack": {
       "versions": {
         "1.0.0": "provideDelegateRegistry"
+      }
+    },
+    "declarations": {
+      "versions": {
+        "1.0.0": "provideDeclarations"
       }
     }
   },
