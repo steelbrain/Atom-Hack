@@ -15,7 +15,8 @@
     "atom-package-deps": "^4.3.1",
     "node-ssh": "^3.0.1",
     "sb-exec": "^3.0.1",
-    "sb-promisify": "^2.0.1"
+    "sb-promisify": "^2.0.1",
+    "shell-escape": "^0.2.0"
   },
   "package-deps": [
     "linter",
