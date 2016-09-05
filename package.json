@@ -33,5 +33,9 @@
         "0.1.0": "provideHack"
       }
     }
+  },
+  "devDependencies": {
+    "eslint-config-steelbrain": "^1.0.4",
+    "flow-bin": "^0.32.0"
   }
 }
