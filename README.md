@@ -1,5 +1,7 @@
 # Atom-Hack [![Build Status](https://travis-ci.org/steelbrain/Atom-Hack.svg)](https://travis-ci.org/steelbrain/Atom-Hack) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/steelbrain/atom-hack)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/steelbrain/Atom-Hack.svg)](https://greenkeeper.io/)
+
 
 [HackLang](https://github.com/facebook/hhvm) support for [Atom editor](http://atom.io).
 
