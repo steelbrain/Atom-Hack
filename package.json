@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "atom-package-deps": "^4.3.1",
-    "node-ssh": "^4.0.1",
+    "node-ssh": "4.2.2",
     "sb-exec": "^4.0.0",
     "sb-promisify": "^2.0.1",
     "shell-escape": "^0.2.0"
